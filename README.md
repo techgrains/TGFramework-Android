@@ -66,6 +66,10 @@ TGSession holds data in app memory (RAM) so whenever it required data to be stor
 - TGResponse : Http Service Response creation
 - TGError : Error handling
 
+### Anything to say?
+Any suggestions or recommendations are most welcome.
+> Please email me on vishal@techgrains.com with subject "TGFramework" for easier reference and to have in proper mailbox folder. Thanks in advance!
+
 ## License
 #### Copyright 2015 Techgrains Technologies
 
