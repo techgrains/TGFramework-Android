@@ -54,6 +54,9 @@ Activity : Person person = TGSession.instance().get("Person");
 * Common UI rendering place:
 Create all the UI pages by binding TGSession attribtues with it. And behind the scene use your own way of using various data sources or services to fill data synchronously or asynchronously in TGSession.
 
+##### TGSessionListener:
+Just make any class as Session listener by implementing TGSessionListener. And get the ability to perfrom any post action when any key has been put in session, removed from session or even session become invalidated.
+
 ##### Where NOT to use TGSession:
 TGSession holds data in app memory (RAM) so whenever it required data to be stored beyond user's app usage. Please consider to store it in local database or shared preference. One can reload in TGSession again when app starts again.
 
