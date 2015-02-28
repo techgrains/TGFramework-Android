@@ -21,8 +21,20 @@ package com.techgrains.session;
 public interface TGSessionListener {
 
     /**
-     * Triggers whenever TGSession becomes invalid
+     * When TGSession becomes invalid
      */
     public void sessionInvalidate();
+
+    /**
+     * When put key in TGSession
+     * @param key Session key
+     */
+    public void keyPut(String key);
+
+    /**
+     * When key removed from TGSession
+     * @param key Session key
+     */
+    public void keyRemove(String key);
 
 }

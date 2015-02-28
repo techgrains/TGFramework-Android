@@ -99,60 +99,6 @@ public class TGSessionTest {
     }
 
     @Test
-    public void sessionListener() {
-        TestSessionListener listener = new TestSessionListener();
-        session.addSessionListener(listener);
-        assertFalse(listener.isSessionInvalidate);
-
-        // sessionInvalidate()
-        session.invalidate();
-        assertTrue(listener.isSessionInvalidate);
-        listener.reset();
-
-        // sessionCreated()
-        session = TGSession.instance();
-        assertFalse(listener.isSessionInvalidate);
-
-        // Listener won't be called after removing listener
-        session.removeSessionListener(listener);
-        listener.reset();
-        session.invalidate();
-        assertFalse(listener.isSessionInvalidate);
-        session = TGSession.instance();
-        assertFalse(listener.isSessionInvalidate);
-    }
-
-    @Test
-    public void sessionListenerCount() {
-        TestSessionListener listener1 = new TestSessionListener();
-        TestSessionListener listener2 = new TestSessionListener();
-        session.addSessionListener(listener1);
-        assertEquals(1, session.countSessionListeners());
-        session.addSessionListener(listener2);
-        assertEquals(2, session.countSessionListeners());
-        session.addSessionListener(listener1);
-        assertEquals(2, session.countSessionListeners());
-        session.removeSessionListener(listener2);
-        assertEquals(1, session.countSessionListeners());
-        session.addSessionListener(listener2);
-        session.removeAllSessionListeners();
-        assertEquals(0, session.countSessionListeners());
-    }
-
-    @Test
-    public void multipleSessionListeners() {
-        TestSessionListener listener1 = new TestSessionListener();
-        TestSessionListener listener2 = new TestSessionListener();
-        session.addSessionListener(listener1);
-        session.addSessionListener(listener2);
-        assertFalse(listener1.isSessionInvalidate);
-        assertFalse(listener2.isSessionInvalidate);
-        session.invalidate();
-        assertTrue(listener1.isSessionInvalidate);
-        assertTrue(listener2.isSessionInvalidate);
-    }
-
-    @Test
     public void equals() {
         try {
             TGSession session1 = session;
@@ -165,18 +111,6 @@ public class TGSessionTest {
             assertFalse(session2.equals(session3));
         } catch (InterruptedException e) {
             fail(e.getMessage());
-        }
-    }
-
-    public class TestSessionListener implements TGSessionListener {
-        boolean isSessionInvalidate;
-
-        public void sessionInvalidate() {
-            isSessionInvalidate = true;
-        }
-
-        public void reset() {
-            isSessionInvalidate = false;
         }
     }
 }

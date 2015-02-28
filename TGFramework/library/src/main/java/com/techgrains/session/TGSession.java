@@ -115,12 +115,15 @@ public class TGSession extends TGObject {
 
     /**
      * Store key-value pair as part of session. If provided key is already there, will be replaced with this new one.
+     * Calls TGSessionListener.keyPut after adding into session.
      *
      * @param key Non-null String to represent as key
      * @param value Any Object as value paired with the key
      */
     public void put(String key, Object value) {
         keyValues.put(key, value);
+        for(TGSessionListener listener : listeners)
+            listener.keyPut(key);
     }
 
     /**
@@ -134,11 +137,13 @@ public class TGSession extends TGObject {
     }
 
     /**
-     * Removes key-value pair from the session for the provided key.
+     * Removes key-value pair from the session for the provided key. Calls TGSessionListener.keyRemove prior to remove from session.
      *
      * @param key Non-null String to represent as key
      */
     public void remove(String key) {
+        for(TGSessionListener listener : listeners)
+            listener.keyRemove(key);
         keyValues.remove(key);
     }
 
