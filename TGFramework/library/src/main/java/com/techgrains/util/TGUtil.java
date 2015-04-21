@@ -21,4 +21,5 @@ import com.techgrains.common.TGObject;
  * Utility class for TGFramework library.
  */
 public class TGUtil extends TGObject {
+
 }
