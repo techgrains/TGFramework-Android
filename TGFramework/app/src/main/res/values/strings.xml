@@ -2,7 +2,13 @@
 <resources>
 
     <string name="app_name">TGFramework</string>
+    <string name="str_TGActivity">TGActivity</string>
+    <string name="title_activity_features">FeaturesActivity</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="str_ShowAlertDialog">Show Alert Dialog</string>
+    <string name="str_ShowProgressDialog">Show progress Dialog</string>
+    <string name="str_Fragment">Fragment</string>
 
 </resources>

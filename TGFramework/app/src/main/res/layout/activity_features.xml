@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:isScrollContainer="false"
-    tools:context=".MainActivity">
+    tools:context="com.techgrains.example.FeaturesActivity">
 
 
     <LinearLayout
@@ -16,10 +16,23 @@
         android:paddingTop="@dimen/activity_vertical_margin">
 
         <Button
-            android:id="@+id/main_btn_TGActivity"
+            android:id="@+id/features_btn_Fragment"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:text="@string/str_TGActivity" />
+            android:layout_height="wrap_content"
+            android:text="@string/str_Fragment" />
+
+        <Button
+            android:id="@+id/features_btn_ShowProgressDialog"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/str_ShowProgressDialog" />
+
+        <Button
+            android:id="@+id/features_btn_ShowAlertDialog"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/str_ShowAlertDialog" />
+
 
     </LinearLayout>
 </ScrollView>
