@@ -10,7 +10,7 @@ import com.techgrains.model.dialog.TGDialogModel;
 import com.techgrains.model.dialog.TGProgressDialogModel;
 import com.techgrains.util.TGUtil;
 
-public class TGActivity extends FragmentActivity implements TGIAlertDialog, TGIProgressDialog {
+public abstract class TGActivity extends FragmentActivity implements TGIAlertDialog, TGIProgressDialog {
 
     private ProgressDialog mProgressDialog = null;
 
@@ -55,8 +55,14 @@ public class TGActivity extends FragmentActivity implements TGIAlertDialog, TGIP
     @Override
     public void showProgressDialog(TGProgressDialogModel dialogModel) {
         dismissProgressDialog();
+        if (dialogModel == null) {
+            return;
+        }
         try {
             mProgressDialog = ProgressDialog.show(this, dialogModel.getTitle(), dialogModel.getMessage(), dialogModel.isCancelable());
+            if (dialogModel.getIndeterminateDrawable() != -1) {
+                mProgressDialog.setIndeterminateDrawable(getResources().getDrawable(dialogModel.getIndeterminateDrawable()));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -24,6 +24,10 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:support-v4:22.+'
+
+    // Android Support Annotations
+    compile 'com.android.support:support-annotations:20.0.0'
 
     testCompile 'junit:junit:4.12'
     testCompile "org.mockito:mockito-core:1.9.5"
@@ -36,14 +40,14 @@ configurations {
 
 sourceSets {
     unitTest {
-        java.srcDirs = ['src/main/java','src/test/java']
+        java.srcDirs = ['src/main/java', 'src/test/java']
         resources.srcDir file('src/test/res')
     }
 }
 
-task unitTest(type:Test) {
+task unitTest(type: Test) {
     testClassesDir = sourceSets.unitTest.output.classesDir
-    classpath      = sourceSets.unitTest.runtimeClasspath
+    classpath = sourceSets.unitTest.runtimeClasspath
 }
 
 android.libraryVariants.all { variant ->
