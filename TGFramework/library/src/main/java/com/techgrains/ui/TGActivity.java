@@ -6,8 +6,8 @@ import android.support.v4.app.FragmentActivity;
 
 import com.techgrains.dialog.TGIAlertDialog;
 import com.techgrains.dialog.TGIProgressDialog;
-import com.techgrains.model.dialog.TGDialogModel;
-import com.techgrains.model.dialog.TGProgressDialogModel;
+import com.techgrains.model.dialog.TGAlertDialog;
+import com.techgrains.model.dialog.TGProgressDialog;
 import com.techgrains.util.TGUtil;
 
 public abstract class TGActivity extends FragmentActivity implements TGIAlertDialog, TGIProgressDialog {
@@ -15,77 +15,61 @@ public abstract class TGActivity extends FragmentActivity implements TGIAlertDia
     private ProgressDialog mProgressDialog = null;
 
     @Override
-    public void showAlertDialog(TGDialogModel dialogModel) {
-        if (dialogModel == null) {
+    public void showAlertDialog(TGAlertDialog alertDialog) {
+        if (alertDialog == null) {
             return;
         }
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
-        if (TGUtil.hasValue(dialogModel.getTitle())) {
-            dialog.setTitle(dialogModel.getTitle());
-        }
-        if (TGUtil.hasValue(dialogModel.getMessage())) {
-            dialog.setMessage(dialogModel.getMessage());
+        if (TGUtil.hasValue(alertDialog.getTitle())) {
+            dialog.setTitle(alertDialog.getTitle());
         }
 
-        if (TGUtil.hasValue(dialogModel.getPositiveText())) {
-            dialog.setPositiveButton(dialogModel.getPositiveText(), dialogModel.getOnPositiveCLick());
-
+        if (TGUtil.hasValue(alertDialog.getMessage())) {
+            dialog.setMessage(alertDialog.getMessage());
         }
 
-        if (TGUtil.hasValue(dialogModel.getNegativeText())) {
-            dialog.setPositiveButton(dialogModel.getNegativeText(), dialogModel.getOnNegativeClick());
-
+        if (TGUtil.hasValue(alertDialog.getPositiveButtonText())) {
+            dialog.setPositiveButton(alertDialog.getPositiveButtonText(), alertDialog.getOnPositiveCLick());
         }
 
-        if (TGUtil.hasValue(dialogModel.getNeutralText())) {
-            dialog.setNeutralButton(dialogModel.getNeutralText(), dialogModel.getOnNeutralClick());
+        if (TGUtil.hasValue(alertDialog.getNegativeButtonText())) {
+            dialog.setPositiveButton(alertDialog.getNegativeButtonText(), alertDialog.getOnNegativeClick());
         }
 
-        dialog.setCancelable(dialogModel.isCancellable());
+        if (TGUtil.hasValue(alertDialog.getNeutralButtonText())) {
+            dialog.setNeutralButton(alertDialog.getNeutralButtonText(), alertDialog.getOnNeutralClick());
+        }
 
+        dialog.setCancelable(alertDialog.isCancellable());
 
-        if (TGUtil.hasValue(dialogModel.getIcon() != -1)) {
-            dialog.setIcon(dialogModel.getIcon());
+        if (TGUtil.hasValue(alertDialog.getIcon() != -1)) {
+            dialog.setIcon(alertDialog.getIcon());
         }
         dialog.show();
     }
 
     @Override
-    public void showProgressDialog(TGProgressDialogModel dialogModel) {
+    public void showProgressDialog(TGProgressDialog progressDialog) {
         dismissProgressDialog();
-        if (dialogModel == null) {
+        if (progressDialog == null) {
             return;
         }
-        try {
-            mProgressDialog = ProgressDialog.show(this, dialogModel.getTitle(), dialogModel.getMessage(), dialogModel.isCancelable());
-            if (dialogModel.getIndeterminateDrawable() != -1) {
-                mProgressDialog.setIndeterminateDrawable(getResources().getDrawable(dialogModel.getIndeterminateDrawable()));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        mProgressDialog = ProgressDialog.show(this, progressDialog.getTitle(), progressDialog.getMessage(), progressDialog.isCancelable());
+        if (progressDialog.getIndeterminateDrawable() != -1) {
+            mProgressDialog.setIndeterminateDrawable(getResources().getDrawable(progressDialog.getIndeterminateDrawable()));
         }
     }
 
     @Override
     public boolean isShowingProgressDialog() {
-        try {
-            if (mProgressDialog != null && mProgressDialog.isShowing())
-                return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
+        return mProgressDialog != null && mProgressDialog.isShowing();
     }
 
     @Override
     public void dismissProgressDialog() {
-        try {
-            if (mProgressDialog != null && mProgressDialog.isShowing())
-                mProgressDialog.dismiss();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        if (mProgressDialog != null && mProgressDialog.isShowing())
+            mProgressDialog.dismiss();
     }
 }

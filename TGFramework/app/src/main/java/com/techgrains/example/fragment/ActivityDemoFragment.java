@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import com.techgrains.dialog.TGIAlertDialog;
 import com.techgrains.dialog.TGIProgressDialog;
 import com.techgrains.example.R;
-import com.techgrains.model.dialog.TGDialogModel;
-import com.techgrains.model.dialog.TGProgressDialogModel;
+import com.techgrains.model.dialog.TGAlertDialog;
+import com.techgrains.model.dialog.TGProgressDialog;
 
 public class ActivityDemoFragment extends Fragment {
 
@@ -64,7 +64,12 @@ public class ActivityDemoFragment extends Fragment {
                 };
                 boolean cancellable = false;
 
-                TGDialogModel dModel = new TGDialogModel(title, message, positiveText, onPositiveCLick, negativeText, onNegativeClick, cancellable);
+                TGAlertDialog dModel = new TGAlertDialog(title, message, positiveText);
+                dModel.setOnPositiveCLick(onPositiveCLick);
+                dModel.setNegativeButtonText(negativeText);
+                dModel.setOnNegativeClick(onNegativeClick);
+                dModel.setCancellable(cancellable);
+
 
                 mAlertDialogListener.showAlertDialog(dModel);
             }
@@ -75,7 +80,10 @@ public class ActivityDemoFragment extends Fragment {
         root.findViewById(R.id.featuresFrag_btn_ShowProgressDialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TGProgressDialogModel pModel = new TGProgressDialogModel("Title", "Message", false, R.drawable.spinner);
+
+                TGProgressDialog pModel = new TGProgressDialog("Title", "Message", R.drawable.spinner);
+                pModel.setCancelable(false);
+
                 mProgressDialogListener.showProgressDialog(pModel);
 
                 Handler handler = new Handler();

@@ -9,9 +9,9 @@ import junit.framework.TestCase;
 /**
  * Created by CNS on 21/04/15.
  */
-public class TGDialogModelTest extends TestCase {
+public class TGAlertDialogTest extends TestCase {
 
-    TGDialogModel model;
+    TGAlertDialog model;
 
     @Override
     protected void setUp() throws Exception {
@@ -42,14 +42,14 @@ public class TGDialogModelTest extends TestCase {
         };
         boolean cancellable = false;
 
-        model = new TGDialogModel(title, message, positiveText, onPositiveCLick, negativeText, onNegativeClick, cancellable);
+        model = new TGAlertDialog(title, message, positiveText, onPositiveCLick, negativeText, onNegativeClick, cancellable);
 
         Assert.assertTrue(model.getTitle().equals(title));
         Assert.assertTrue(model.getMessage().equals(message));
-        Assert.assertTrue(model.getPositiveText().equals(positiveText));
+        Assert.assertTrue(model.getPositiveButtonText().equals(positiveText));
         Assert.assertEquals(onPositiveCLick, model.getOnPositiveCLick());
 
-        Assert.assertTrue(model.getNegativeText().equals(negativeText));
+        Assert.assertTrue(model.getNegativeButtonText().equals(negativeText));
         Assert.assertEquals(onNegativeClick, model.getOnNegativeClick());
 
         Assert.assertTrue(model.isCancellable() == cancellable);

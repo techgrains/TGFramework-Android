@@ -15,6 +15,8 @@
  */
 package com.techgrains.session;
 
+import android.content.Context;
+
 import com.techgrains.common.TGObject;
 
 import java.util.HashMap;
@@ -24,7 +26,7 @@ import java.util.Set;
 
 /**
  * Singleton Session instance.
- *
+ * <p/>
  * Holds single instance of session in memory along with keyValues.
  * - Extremely handy to avoid local storage operation (shared preference, database etc.)
  * - Very handy to access from any layer of the application (from UI to Service)
@@ -38,6 +40,8 @@ public class TGSession extends TGObject {
     private long createdAt;
     private Map<String, Object> keyValues;
     private Set<TGSessionListener> listeners;
+
+    private Context applicationContext;
 
     /**
      * Private constructor to avoid empty initialisation of session object.
@@ -87,7 +91,7 @@ public class TGSession extends TGObject {
      * Invalidate the current session. It also fires "sessionInvalidate" method of every added TGSessionListener.
      */
     public void invalidate() {
-        for(TGSessionListener listener : listeners)
+        for (TGSessionListener listener : listeners)
             listener.sessionInvalidate();
 
         session = null;
@@ -117,12 +121,12 @@ public class TGSession extends TGObject {
      * Store key-value pair as part of session. If provided key is already there, will be replaced with this new one.
      * Calls TGSessionListener.keyPut after adding into session.
      *
-     * @param key Non-null String to represent as key
+     * @param key   Non-null String to represent as key
      * @param value Any Object as value paired with the key
      */
     public void put(String key, Object value) {
         keyValues.put(key, value);
-        for(TGSessionListener listener : listeners)
+        for (TGSessionListener listener : listeners)
             listener.keyPut(key);
     }
 
@@ -142,7 +146,7 @@ public class TGSession extends TGObject {
      * @param key Non-null String to represent as key
      */
     public void remove(String key) {
-        for(TGSessionListener listener : listeners)
+        for (TGSessionListener listener : listeners)
             listener.keyRemove(key);
         keyValues.remove(key);
     }
@@ -167,6 +171,7 @@ public class TGSession extends TGObject {
     }
 
     /* * * Session Listener * * */
+
     /**
      * Adds given session listener to the collection of listeners.
      *
@@ -220,8 +225,15 @@ public class TGSession extends TGObject {
     /**
      * Returns an integer hash code for this object.
      */
-    public int hashCode(){
+    public int hashCode() {
         return Long.valueOf(id()).hashCode();
     }
 
+    public Context getApplicationContext() {
+        return applicationContext;
+    }
+
+    public void setApplicationContext(Context applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 }

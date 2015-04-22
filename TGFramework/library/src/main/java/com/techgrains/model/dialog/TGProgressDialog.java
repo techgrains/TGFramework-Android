@@ -5,24 +5,21 @@ import android.support.annotation.DrawableRes;
 /**
  * Created by CNS on 21/04/15.
  */
-public class TGProgressDialogModel {
+public class TGProgressDialog {
 
     private String title;
-    private String message = null;
-    private boolean cancelable;
+    private String message;
+    private boolean cancelable = true;
     private int indeterminateDrawable = -1;
 
-    public TGProgressDialogModel(String title, String message, boolean cancelable) {
+    public TGProgressDialog(String title, String message) {
         this.title = title;
         this.message = message;
-        this.cancelable = cancelable;
     }
 
-    public TGProgressDialogModel(String title, String message, boolean cancelable, @DrawableRes int indeterminateDrawable) {
-
+    public TGProgressDialog(String title, String message, @DrawableRes int indeterminateDrawable) {
         this.title = title;
         this.message = message;
-        this.cancelable = cancelable;
         this.indeterminateDrawable = indeterminateDrawable;
     }
 
