@@ -229,10 +229,20 @@ public class TGSession extends TGObject {
         return Long.valueOf(id()).hashCode();
     }
 
+    /**
+     * Returns application context
+     *
+     * @return Context
+     */
     public Context getApplicationContext() {
         return applicationContext;
     }
 
+    /**
+     * Sets application context
+     *
+     * @param applicationContext
+     */
     public void setApplicationContext(Context applicationContext) {
         this.applicationContext = applicationContext;
     }

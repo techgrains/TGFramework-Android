@@ -14,6 +14,11 @@ public abstract class TGActivity extends FragmentActivity implements TGIAlertDia
 
     private ProgressDialog mProgressDialog = null;
 
+    /**
+     * Shows alert dialog, based on the properties of passed parameter object
+     *
+     * @param alertDialog TGAlertDialog
+     */
     @Override
     public void showAlertDialog(TGAlertDialog alertDialog) {
         if (alertDialog == null) {
@@ -50,6 +55,11 @@ public abstract class TGActivity extends FragmentActivity implements TGIAlertDia
         dialog.show();
     }
 
+    /**
+     * Shows progress dialog, based on the properties of passed parameter object
+     *
+     * @param progressDialog TGProgressDialog
+     */
     @Override
     public void showProgressDialog(TGProgressDialog progressDialog) {
         dismissProgressDialog();
@@ -62,11 +72,17 @@ public abstract class TGActivity extends FragmentActivity implements TGIAlertDia
         }
     }
 
+    /**
+     * Checks: is progress dialog still showing
+     */
     @Override
     public boolean isShowingProgressDialog() {
         return mProgressDialog != null && mProgressDialog.isShowing();
     }
 
+    /**
+     * Dismisses progress dialog
+     */
     @Override
     public void dismissProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing())
