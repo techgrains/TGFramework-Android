@@ -31,6 +31,7 @@ public interface TGIProgressDialog {
 
     /**
      * Checks: is progress dialog still showing
+     * @return boolean
      */
     public boolean isShowingProgressDialog();
 

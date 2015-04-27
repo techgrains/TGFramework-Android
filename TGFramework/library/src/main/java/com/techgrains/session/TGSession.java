@@ -24,7 +24,7 @@ import java.util.Set;
 
 /**
  * Singleton Session instance.
- * <p/>
+ *
  * Holds single instance of session in memory along with keyValues.
  * - Extremely handy to avoid local storage operation (shared preference, database etc.)
  * - Very handy to access from any layer of the application (from UI to Service)

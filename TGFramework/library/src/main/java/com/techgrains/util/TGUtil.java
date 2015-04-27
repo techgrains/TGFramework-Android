@@ -31,11 +31,11 @@ public class TGUtil extends TGObject {
      * Parse Date by provided pattern along with target Time Zone.
      * Pattern Reference: http://developer.android.com/reference/java/text/SimpleDateFormat.html
      *
-     * @param dateString
-     * @param pattern
+     * @param dateString String
+     * @param pattern String
      * @param targetTimeZone TimeZone
      * @return java.util.Date which represents based on provided dateString and pattern
-     * @throws ParseException
+     * @throws ParseException ParseException
      */
     public Date parseDate(String dateString, String pattern, TimeZone targetTimeZone) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
@@ -55,7 +55,7 @@ public class TGUtil extends TGObject {
      * @param date Date
      * @param pattern String
      * @param targetTimeZone TimeZone
-     * @return
+     * @return String - formatted string
      */
     public String formatDate(Date date, String pattern, TimeZone targetTimeZone) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);

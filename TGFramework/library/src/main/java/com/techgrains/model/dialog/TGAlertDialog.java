@@ -75,7 +75,7 @@ public class TGAlertDialog extends TGModel {
     /**
      * Sets onClick listener for Neutral Button
      *
-     * @param onNeutralClick
+     * @param onNeutralClick DialogInterface.OnClickListener
      */
     public void setOnNeutralClick(DialogInterface.OnClickListener onNeutralClick) {
         this.onNeutralClick = onNeutralClick;

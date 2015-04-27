@@ -29,8 +29,8 @@ public class TGProgressDialog extends TGModel {
     /**
      * Progress dialog with title and message
      *
-     * @param title
-     * @param message
+     * @param title String
+     * @param message String
      */
 
     public TGProgressDialog(String title, String message) {
@@ -41,9 +41,9 @@ public class TGProgressDialog extends TGModel {
     /**
      * Progress dialog with title, message and indeterminateDrawable
      *
-     * @param title
-     * @param message
-     * @param indeterminateDrawable
+     * @param title String
+     * @param message String
+     * @param indeterminateDrawable DrawableRes
      */
     public TGProgressDialog(String title, String message, @DrawableRes int indeterminateDrawable) {
         this.title = title;
@@ -61,7 +61,7 @@ public class TGProgressDialog extends TGModel {
     /**
      * Sets Drawable resource id for indeterminateDrawable
      *
-     * @param indeterminateDrawable
+     * @param indeterminateDrawable DrawableRes
      */
     public void setIndeterminateDrawable(@DrawableRes int indeterminateDrawable) {
         this.indeterminateDrawable = indeterminateDrawable;

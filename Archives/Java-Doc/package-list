@@ -1,4 +1,8 @@
+com.techgrains.application
 com.techgrains.common
+com.techgrains.dialog
 com.techgrains.model
+com.techgrains.model.dialog
 com.techgrains.session
+com.techgrains.ui
 com.techgrains.util
