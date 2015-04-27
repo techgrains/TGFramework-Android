@@ -55,6 +55,11 @@ public class TGAlertDialogTest extends TestCase {
 
         model = new TGAlertDialog(title, message, positiveText);
 
+        model.setOnPositiveCLick(onPositiveCLick);
+
+        model.setNegativeButtonText(negativeText);
+        model.setOnNegativeClick(onNegativeClick);
+
         Assert.assertTrue(model.getTitle().equals(title));
         Assert.assertTrue(model.getMessage().equals(message));
         Assert.assertTrue(model.getPositiveButtonText().equals(positiveText));
