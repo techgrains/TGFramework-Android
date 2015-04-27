@@ -84,7 +84,7 @@ public abstract class TGActivity extends Activity implements TGIAlertDialog, TGI
         if (progressDialog == null) {
             return;
         }
-        mProgressDialog = ProgressDialog.show(this.getApplicationContext(), progressDialog.getTitle(), progressDialog.getMessage(), progressDialog.isCancelable());
+        mProgressDialog = ProgressDialog.show(this, progressDialog.getTitle(), progressDialog.getMessage(), progressDialog.isCancelable());
         if (progressDialog.getIndeterminateDrawable() != -1) {
             mProgressDialog.setIndeterminateDrawable(getResources().getDrawable(progressDialog.getIndeterminateDrawable()));
         }
