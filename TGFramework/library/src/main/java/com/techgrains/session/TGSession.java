@@ -15,8 +15,6 @@
  */
 package com.techgrains.session;
 
-import android.content.Context;
-
 import com.techgrains.common.TGObject;
 
 import java.util.HashMap;
@@ -40,8 +38,6 @@ public class TGSession extends TGObject {
     private long createdAt;
     private Map<String, Object> keyValues;
     private Set<TGSessionListener> listeners;
-
-    private Context applicationContext;
 
     /**
      * Private constructor to avoid empty initialisation of session object.
@@ -227,23 +223,5 @@ public class TGSession extends TGObject {
      */
     public int hashCode() {
         return Long.valueOf(id()).hashCode();
-    }
-
-    /**
-     * Returns application context
-     *
-     * @return Context
-     */
-    public Context getApplicationContext() {
-        return applicationContext;
-    }
-
-    /**
-     * Sets application context
-     *
-     * @param applicationContext
-     */
-    public void setApplicationContext(Context applicationContext) {
-        this.applicationContext = applicationContext;
     }
 }

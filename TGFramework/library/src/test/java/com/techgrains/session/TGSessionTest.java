@@ -113,4 +113,12 @@ public class TGSessionTest {
             fail(e.getMessage());
         }
     }
+
+    @Test
+    public void invalidateSessionDropKeys() {
+        session.put("key","value");
+        assertEquals("value",session.get("key"));
+        session.invalidate();
+        assertEquals(null,session.instance().get("key"));
+    }
 }

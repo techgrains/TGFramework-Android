@@ -1,8 +1,23 @@
+/*
+ * Copyright 2015 Techgrains Technologies
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.techgrains.ui;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.support.v4.app.FragmentActivity;
 
 import com.techgrains.dialog.TGIAlertDialog;
 import com.techgrains.dialog.TGIProgressDialog;
@@ -10,7 +25,10 @@ import com.techgrains.model.dialog.TGAlertDialog;
 import com.techgrains.model.dialog.TGProgressDialog;
 import com.techgrains.util.TGUtil;
 
-public abstract class TGActivity extends FragmentActivity implements TGIAlertDialog, TGIProgressDialog {
+/**
+ * Base Activity of TGFramework which gives handy implementation of Alert Dialog & Progress Dialog
+ */
+public abstract class TGActivity extends Activity implements TGIAlertDialog, TGIProgressDialog {
 
     private ProgressDialog mProgressDialog = null;
 
@@ -25,7 +43,7 @@ public abstract class TGActivity extends FragmentActivity implements TGIAlertDia
             return;
         }
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this.getApplicationContext());
 
         if (TGUtil.hasValue(alertDialog.getTitle())) {
             dialog.setTitle(alertDialog.getTitle());
@@ -66,7 +84,7 @@ public abstract class TGActivity extends FragmentActivity implements TGIAlertDia
         if (progressDialog == null) {
             return;
         }
-        mProgressDialog = ProgressDialog.show(this, progressDialog.getTitle(), progressDialog.getMessage(), progressDialog.isCancelable());
+        mProgressDialog = ProgressDialog.show(this.getApplicationContext(), progressDialog.getTitle(), progressDialog.getMessage(), progressDialog.isCancelable());
         if (progressDialog.getIndeterminateDrawable() != -1) {
             mProgressDialog.setIndeterminateDrawable(getResources().getDrawable(progressDialog.getIndeterminateDrawable()));
         }

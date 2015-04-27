@@ -16,30 +16,13 @@
 package com.techgrains.application;
 
 import android.app.Application;
-import android.content.Context;
+import android.test.ApplicationTestCase;
 
 /**
- * Application which holds context reference.
- * - Android framework manages Application as Singleton Instance internally.
- * - TGFramework uses this TGApplication for Application Context reference.
+ * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
-public class TGApplication extends Application {
-
-    private static Context context;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        context = this.getApplicationContext();
+public class ApplicationTest extends ApplicationTestCase<Application> {
+    public ApplicationTest() {
+        super(Application.class);
     }
-
-    /**
-     * Returns Application Context
-     *
-     * @return Context
-     */
-    public static Context getContext() {
-        return context;
-    }
-
 }
