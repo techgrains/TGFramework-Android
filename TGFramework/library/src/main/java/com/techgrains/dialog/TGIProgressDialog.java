@@ -18,7 +18,7 @@ package com.techgrains.dialog;
 import com.techgrains.model.dialog.TGProgressDialog;
 
 /**
- * Custom progress dialog interface to manage custom callback methods related to alert dialog.
+ * Custom progress dialog interface to manage custom callback methods related to progress dialog.
  */
 public interface TGIProgressDialog {
 

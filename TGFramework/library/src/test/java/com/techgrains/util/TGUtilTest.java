@@ -25,15 +25,11 @@ import static org.junit.Assert.*;
 
 public class TGUtilTest {
 
-    TGUtil util;
-
     long timeInMillis;
     Date date;
 
     @Before
     public void setUp() {
-        util = new TGUtil();
-
         // Equals to "2005-03-16 7:30:45"
         timeInMillis = 1110938445000L;
         date = new Date(timeInMillis);
@@ -41,24 +37,23 @@ public class TGUtilTest {
 
     @After
     public void tearDown() {
-        util = null;
     }
 
     @Test
     public void parseDate() throws ParseException {
-        Date parsedDate = util.parseDate("2005-03-16 7:30:45", "yyyy-MM-dd HH:mm:ss");
+        Date parsedDate = TGUtil.parseDate("2005-03-16 7:30:45", "yyyy-MM-dd HH:mm:ss");
         assertEquals(date, parsedDate);
     }
 
     @Test
     public void parseAndFormatDateWithTimeZone() throws ParseException {
-        Date date = util.parseDate("2005-03-16 7:30:45", "yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("EST"));
-        assertEquals("2005-03-16 12:30:45.000+0000", util.formatDate(date, "yyyy-MM-dd HH:mm:ss.SSSZ", TimeZone.getTimeZone("GMT")));
+        Date date = TGUtil.parseDate("2005-03-16 7:30:45", "yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("EST"));
+        assertEquals("2005-03-16 12:30:45.000+0000", TGUtil.formatDate(date, "yyyy-MM-dd HH:mm:ss.SSSZ", TimeZone.getTimeZone("GMT")));
     }
 
     @Test
     public void formatDate() {
-        assertEquals("03/16/05", util.formatDate(date, "MM/dd/yy"));
+        assertEquals("03/16/05", TGUtil.formatDate(date, "MM/dd/yy"));
     }
 
 }
