@@ -43,7 +43,7 @@ public abstract class TGActivity extends Activity implements TGIAlertDialog, TGI
             return;
         }
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this.getApplicationContext());
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
         if (TGUtil.hasValue(alertDialog.getTitle())) {
             dialog.setTitle(alertDialog.getTitle());
