@@ -37,14 +37,14 @@ public class TGUtil extends TGObject {
      * @return java.util.Date which represents based on provided dateString and pattern
      * @throws ParseException ParseException
      */
-    public Date parseDate(String dateString, String pattern, TimeZone targetTimeZone) throws ParseException {
+    public static Date parseDate(String dateString, String pattern, TimeZone targetTimeZone) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         if(targetTimeZone!=null)
             simpleDateFormat.setTimeZone(targetTimeZone);
         return simpleDateFormat.parse(dateString);
     }
 
-    public Date parseDate(String dateString, String pattern) throws ParseException {
+    public static Date parseDate(String dateString, String pattern) throws ParseException {
         return parseDate(dateString, pattern, null);
     }
 
@@ -57,14 +57,14 @@ public class TGUtil extends TGObject {
      * @param targetTimeZone TimeZone
      * @return String - formatted string
      */
-    public String formatDate(Date date, String pattern, TimeZone targetTimeZone) {
+    public static String formatDate(Date date, String pattern, TimeZone targetTimeZone) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         if(targetTimeZone!=null)
             simpleDateFormat.setTimeZone(targetTimeZone);
         return simpleDateFormat.format(date);
     }
 
-    public String formatDate(Date date, String pattern) {
+    public static String formatDate(Date date, String pattern) {
         return formatDate(date, pattern, null);
     }
 
