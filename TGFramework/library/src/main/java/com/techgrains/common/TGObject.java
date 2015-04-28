@@ -15,13 +15,15 @@
  */
 package com.techgrains.common;
 
+import java.util.Collection;
+
 /**
  * Base class for TGFramework library, having all the basic supportive methods.
  */
 public class TGObject {
 
     /**
-     * Check any object having value or not
+     * Check any object having value or not, currently supports: Object, String, Collection
      *
      * @param object Object
      * @return If provided object is not null and not empty "true", otherwise "false"
@@ -31,6 +33,8 @@ public class TGObject {
             return false;
         } else if (object instanceof String) {
             return ((String) object).length() > 0;
+        } else if (object instanceof Collection) {
+            return ((Collection) object).size() > 0;
         }
         return true;
     }
@@ -48,7 +52,7 @@ public class TGObject {
     /**
      * Null safe by replacing it with provided default value in case of null
      *
-     * @param string String
+     * @param string       String
      * @param defaultValue String
      * @return Input param string if its not null, otherwise provided default value
      */
@@ -69,7 +73,7 @@ public class TGObject {
     /**
      * Null safe by replacing it with provided default value in case of null
      *
-     * @param integer Integer
+     * @param integer      Integer
      * @param defaultValue Integer
      * @return Input param integer if its not null, otherwise provided default value
      */
@@ -90,7 +94,7 @@ public class TGObject {
     /**
      * Null safe by replacing it with provided default value in case of null
      *
-     * @param aLong Long
+     * @param aLong        Long
      * @param defaultValue Long
      * @return Input param aLong if its not null, otherwise provided default value
      */
@@ -111,7 +115,7 @@ public class TGObject {
     /**
      * Null safe by replacing it with provided default value in case of null
      *
-     * @param aDouble Double
+     * @param aDouble      Double
      * @param defaultValue Double
      * @return Input param aDouble if its not null, otherwise provided default value
      */
