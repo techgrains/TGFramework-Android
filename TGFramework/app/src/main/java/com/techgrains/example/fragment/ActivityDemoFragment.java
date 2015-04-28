@@ -100,16 +100,17 @@ public class ActivityDemoFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
+
+        if (activity instanceof TGIProgressDialog) {
             mProgressDialogListener = (TGIProgressDialog) activity;
-        } catch (ClassCastException e) {
+        } else {
             throw new ClassCastException(activity.toString()
                     + " must implement TGIProgressDialog");
         }
 
-        try {
+        if (activity instanceof TGIAlertDialog) {
             mAlertDialogListener = (TGIAlertDialog) activity;
-        } catch (ClassCastException e) {
+        } else {
             throw new ClassCastException(activity.toString()
                     + " must implement TGIAlertDialog");
         }
