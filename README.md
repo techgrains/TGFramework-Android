@@ -61,7 +61,6 @@ Just make any class as Session listener by implementing TGSessionListener. And g
 TGSession holds data in app memory (RAM) so whenever it required data to be stored beyond user's app usage. Please consider to store it in local database or shared preference. One can reload in TGSession again when app starts again.
 
 ### Upcoming...
-- TGActivity : Base activity with easy to use common actions (i.e. loading indicator, alerts/popups etc.)
 - TGModel : Application data models which can bridge service output to UI elements.
 - TGService : Common gateway to call outer services
 - TGUtil : Utility methods for variety of attributes with types. (i.e. Date, Currency, Units etc.)
