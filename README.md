@@ -63,10 +63,9 @@ TGSession holds data in app memory (RAM) so whenever it required data to be stor
 ### Upcoming...
 - TGModel : Application data models which can bridge service output to UI elements.
 - TGService : Common gateway to call outer services
-- TGUtil : Utility methods for variety of attributes with types. (i.e. Date, Currency, Units etc.)
 - TGRequest : Http Service Request creation
 - TGResponse : Http Service Response creation
-- TGError : Error handling
+- TGError & TGException : Error handling & Exception handling
 
 ### Anything to say?
 Any suggestions or recommendations are most welcome.
