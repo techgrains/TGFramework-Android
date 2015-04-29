@@ -65,7 +65,7 @@ TGSession holds data in app memory (RAM) so whenever it required data to be stor
 - TGService : Common gateway to call outer services
 - TGRequest : Http Service Request creation
 - TGResponse : Http Service Response creation
-- TGError : Error handling
+- TGError & TGException : Error handling & Exception handling
 
 ### Anything to say?
 Any suggestions or recommendations are most welcome.
