@@ -26,7 +26,7 @@ import com.techgrains.model.dialog.TGProgressDialog;
 import com.techgrains.util.TGUtil;
 
 /**
- * Base Activity of TGFramework which gives handy implementation of Alert Dialog and Progress Dialog
+ * Base Activity of TGFramework which gives handy implementation of Alert Dialog, Progress Dialog and Toast.
  */
 public abstract class TGActivity extends Activity implements TGIAlertDialog, TGIProgressDialog {
 
