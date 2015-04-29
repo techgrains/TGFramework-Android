@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
- * Utility class for TGFramework library.
+ * Utility class for TGFramework library, which includes date parsing and formatting.
  */
 public class TGUtil extends TGObject {
 
