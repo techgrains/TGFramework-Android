@@ -31,3 +31,6 @@ TGFramework/*.log
 
 # IntelliJ Idea
 TGFramework/.idea/
+
+# Mac OSX
+**/.DS_Store
