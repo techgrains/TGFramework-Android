@@ -18,6 +18,7 @@ package com.techgrains.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.widget.Toast;
 
 import com.techgrains.dialog.TGIAlertDialog;
 import com.techgrains.dialog.TGIProgressDialog;
@@ -105,5 +106,12 @@ public abstract class TGActivity extends Activity implements TGIAlertDialog, TGI
     public void dismissProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing())
             mProgressDialog.dismiss();
+    }
+
+    /**
+     * Create and Show Toast
+     */
+    public void showToast(final String message, final boolean isShort) {
+        Toast.makeText(this.getApplicationContext(), message, isShort ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG).show();
     }
 }
