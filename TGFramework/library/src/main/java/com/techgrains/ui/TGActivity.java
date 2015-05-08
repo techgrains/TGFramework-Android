@@ -109,7 +109,19 @@ public abstract class TGActivity extends Activity implements TGIAlertDialog, TGI
     }
 
     /**
-     * Create and Show Toast
+     * Show Toast message with short duration.
+     *
+     * @param message String
+     */
+    public void showToast(final String message) {
+        showToast(message, true);
+    }
+
+    /**
+     * Show Toast message with boolean selection of short or long duration
+     *
+     * @param message String
+     * @param isShort boolean
      */
     public void showToast(final String message, final boolean isShort) {
         Toast.makeText(this.getApplicationContext(), message, isShort ? Toast.LENGTH_SHORT : Toast.LENGTH_LONG).show();

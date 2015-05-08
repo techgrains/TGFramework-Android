@@ -101,6 +101,14 @@ isShowingProgressDialog();
 dismissProgressDialog();
 ```
 
+###### Toast Message
+Show Toast message with boolean selection of short or long duration
+
+```
+showToast("Email has been sent!");       // For short lived toast message
+showToast("Email has been sent!",false); // For long lived toast message
+```
+
 ### Example App
 Code base already has example "app" in parallel to library, which shows how to use all TG components.
 @TGFramework > app (folder)
