@@ -1,0 +1,14 @@
+Change Log:
+===========
+
+:: 1.1
+- Volley based Request-Response structure (TGRequest, TGResponse etc.)
+- Custom object creation from JSON string using Gson library. (TGUtil)
+- Introduction of Exception and Error related classes (TGException, TGError)
+
+:: 1.0
+- Purpose of TGFramework is to provide developer friendly library, that can help to improve feature development rather focusing on common structure creation during every mobile app development. 
+- Base Activity of TGFramework which gives handy implementation like Alert Dialog, Progress Dialog etc. (TGActivity)
+- Singleton Session management for Android application (TGSession)
+- Utility class for formating and parsing (TGUtil)
+- Application class which holds light weight Application Context reference. (TGApplication)
