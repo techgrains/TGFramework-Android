@@ -15,10 +15,14 @@
  */
 package com.techgrains.util;
 
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+
 import org.junit.*;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 
 import static org.junit.Assert.*;
@@ -56,4 +60,44 @@ public class TGUtilTest {
         assertEquals("03/16/05", TGUtil.formatDate(date, "MM/dd/yy"));
     }
 
+    @Test
+    public void fromJsonSuccess() {
+        Employee employee = (Employee) TGUtil.fromJson(employeeJson(), new TypeToken<Employee>(){}.getType());
+
+        assertNotNull(employee);
+        assertEquals("vishal", employee.name);
+        assertEquals(35, employee.age);
+        assertEquals(54376.43, employee.salary, 2);
+        assertEquals(2, employee.departments.size());
+        assertEquals(1, employee.departments.get(0).id);
+        assertEquals("hr", employee.departments.get(0).name);
+        assertEquals(2, employee.departments.get(1).id);
+        assertEquals("it", employee.departments.get(1).name);
+    }
+
+    @Test
+    public void fromJsonFailure() {
+        try {
+            Employee employee = (Employee) TGUtil.fromJson("{type:wrong json}", new TypeToken<Employee>() {}.getType());
+            fail("Exception must be thrown.");
+        } catch (JsonSyntaxException jse) {
+            assertNotNull(jse);
+        }
+    }
+
+    private String employeeJson() {
+        return "{name:vishal, age:35, salary:54376.43, departments:[{id:1,name:hr},{id:2,name:it}]}";
+    }
+}
+
+class Employee {
+    String name;
+    int age;
+    float salary;
+    List<Department> departments;
+}
+
+class Department {
+    int id;
+    String name;
 }

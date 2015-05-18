@@ -15,8 +15,11 @@
  */
 package com.techgrains.util;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.techgrains.common.TGObject;
 
+import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -68,4 +71,17 @@ public class TGUtil extends TGObject {
         return formatDate(date, pattern, null);
     }
 
+    /**
+     * Object created from provided Json string.
+     * Provide type: Type type = new TypeToken<Employee>(){}.getType();
+     *
+     * @param json
+     * @param type java.lang.reflect.Type
+     * @return Object
+     * @throws JsonSyntaxException
+     */
+    public static Object fromJson(String json, Type type) throws JsonSyntaxException {
+        Gson gson = new Gson();
+        return gson.fromJson(json, type);
+    }
 }

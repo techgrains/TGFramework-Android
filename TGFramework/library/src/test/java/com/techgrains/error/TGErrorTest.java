@@ -6,20 +6,38 @@
  * You may obtain a copy of the License at
  *
  * http://www.apache.org/licenses/LICENSE-2.0
- *                                                                         
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.techgrains.model;
+package com.techgrains.error;
 
-import com.techgrains.common.TGObject;
+import org.junit.*;
+import static org.junit.Assert.*;
 
-/**
- * Base Model class for TGFramework library. All models should extend TGModel.
- */
-public class TGModel extends TGObject {
+public class TGErrorTest {
 
+   TGError error;
+
+    @Before
+    public void setUp() {
+        error = new TGError(0, null);
+    }
+
+    @Test
+    public void errorCreation() {
+        int code = 101;
+        String message = "Some error.";
+        error = new TGError(code, message);
+        assertEquals(code, error.getCode());
+        assertEquals(message, error.getMessage());
+    }
+
+    @After
+    public void tearDown() {
+       error = null;
+    }
 }
