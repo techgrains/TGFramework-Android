@@ -66,8 +66,8 @@ public class TGRequest <T extends TGResponse> extends Request<T>{
     /**
      * Params of the TGRequest
      *
-     * @return Map<String, String>
-     * @throws AuthFailureError
+     * @return Map
+     * @throws AuthFailureError Auth Fails
      */
     final protected Map<String, String> getParams() throws AuthFailureError {
         return params.getParams();
@@ -108,8 +108,8 @@ public class TGRequest <T extends TGResponse> extends Request<T>{
     /**
      * Get Headers. Extend this method to override default behavior of header generation.
      *
-     * @return Map<String, String>
-     * @throws AuthFailureError
+     * @return Map
+     * @throws AuthFailureError Auth Fails
      */
     @Override
     public Map<String, String> getHeaders() throws AuthFailureError {
@@ -120,7 +120,7 @@ public class TGRequest <T extends TGResponse> extends Request<T>{
      * Parsing the network response into standard TGResponse
      *
      * @param networkResponse NetworkResponse
-     * @return Response<T> where T is instance of TGResponse
+     * @return {@code Response<T>} where T is instance of TGResponse
      */
     @Override
     final protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
@@ -144,7 +144,7 @@ public class TGRequest <T extends TGResponse> extends Request<T>{
     /**
      * Delivers the error on TGIResponseListener
      *
-     * @param error
+     * @param error VolleyError
      */
     @Override
     final public void deliverError(VolleyError error) {

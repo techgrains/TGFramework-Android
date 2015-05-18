@@ -1,8 +1,10 @@
 com.techgrains.application
 com.techgrains.common
 com.techgrains.dialog
+com.techgrains.error
 com.techgrains.model
 com.techgrains.model.dialog
+com.techgrains.service
 com.techgrains.session
 com.techgrains.ui
 com.techgrains.util

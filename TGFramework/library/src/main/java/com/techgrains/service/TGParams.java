@@ -30,7 +30,7 @@ public class TGParams extends TGObject {
     /**
      * Params as Map
      *
-     * @return
+     * @return Map
      */
     public Map<String, String> getParams() {
         return params;
@@ -38,7 +38,7 @@ public class TGParams extends TGObject {
 
     /**
      * Sets Map of Params
-     * @param params
+     * @param params Map
      */
     public void setParams(Map<String, String> params) {
         if(params==null) this.params.clear();
@@ -48,8 +48,8 @@ public class TGParams extends TGObject {
     /**
      * Put new param into the Map of Params
      *
-     * @param key
-     * @param value
+     * @param key String
+     * @param value String
      */
     public void putParam(String key, String value) {
         params.put(key, value);

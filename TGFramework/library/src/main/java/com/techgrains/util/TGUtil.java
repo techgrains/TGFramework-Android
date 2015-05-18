@@ -73,12 +73,12 @@ public class TGUtil extends TGObject {
 
     /**
      * Object created from provided Json string.
-     * Provide type: Type type = new TypeToken<Employee>(){}.getType();
+     * Provide type: {@code Type type = new TypeToken<Employee>(){}.getType();}
      *
-     * @param json
+     * @param json String
      * @param type java.lang.reflect.Type
      * @return Object
-     * @throws JsonSyntaxException
+     * @throws JsonSyntaxException Json Systax Fails
      */
     public static Object fromJson(String json, Type type) throws JsonSyntaxException {
         Gson gson = new Gson();
