@@ -21,9 +21,7 @@ import android.content.pm.PackageManager;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpHeaderParser;
 import com.techgrains.application.TGApplication;
 import com.techgrains.error.TGError;
 import com.techgrains.error.TGException;
@@ -36,18 +34,15 @@ import java.util.Map;
  *
  * @param <T> where T is instance of TGResponse
  */
-public class TGRequest <T extends TGResponse> extends Request<T>{
+public abstract class TGRequest <T extends TGResponse> extends Request<T>{
     private static final String API_HEADER_USERAGENT = "User-Agent";
     private static final String API_HEADER_API = "API";
     private static final String API_HEADER_VERSION = "Ver";
 
     private static String userAgent = null;
 
-    private String serverUrl;
-    private String servicePath;
     private TGParams params;
-    private Map<String, String> header;
-    private TGIResponseListener listener;
+    TGIResponseListener listener;
 
     /**
      * Intialize TGRequest
@@ -71,6 +66,51 @@ public class TGRequest <T extends TGResponse> extends Request<T>{
      */
     final protected Map<String, String> getParams() throws AuthFailureError {
         return params.getParams();
+    }
+
+    /**
+     * Get Headers. Extend this method to override default behavior of header generation.
+     *
+     * @return Map
+     * @throws AuthFailureError Auth Fails
+     */
+    @Override
+    final public Map<String, String> getHeaders() throws AuthFailureError {
+        return getDefaultHeaders(null);
+    }
+
+    /**
+     * Delivers the response on the main thread on TGIResponseListener
+     *
+     * @param response TGResponse
+     */
+    @Override
+    protected void deliverResponse(T response) {
+        listener.onSuccessMainThread(response);
+    }
+
+    /**
+     * Delivers the error on TGIResponseListener
+     *
+     * @param error VolleyError
+     */
+    @Override
+    public void deliverError(VolleyError error) {
+        TGResponse response = createTGResponse(error.networkResponse);
+        response.setTgNetworkTimeInMillis(error.getNetworkTimeMs());
+        TGError tgError = new TGException(error).getError();
+        response.setTgError(tgError);
+        listener.onError(response);
+    }
+
+    TGResponse createTGResponse(NetworkResponse networkResponse) {
+        TGResponse response = new TGResponse();
+        response.setTgStatusCode(networkResponse.statusCode);
+        response.setTgResponseString(new String(networkResponse.data));
+        response.setTgHeaders(networkResponse.headers);
+        response.setTgNetworkTimeInMillis(networkResponse.networkTimeMs);
+        response.setTgModified(!networkResponse.notModified);
+        return response;
     }
 
     private static String getUserAgent() {
@@ -103,66 +143,6 @@ public class TGRequest <T extends TGResponse> extends Request<T>{
         }
 
         return header;
-    }
-
-    /**
-     * Get Headers. Extend this method to override default behavior of header generation.
-     *
-     * @return Map
-     * @throws AuthFailureError Auth Fails
-     */
-    @Override
-    public Map<String, String> getHeaders() throws AuthFailureError {
-        return getDefaultHeaders(null);
-    }
-
-    /**
-     * Parsing the network response into standard TGResponse
-     *
-     * @param networkResponse NetworkResponse
-     * @return {@code Response<T>} where T is instance of TGResponse
-     */
-    @Override
-    final protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
-        TGResponse response = createTGResponse(networkResponse);
-
-        listener.onSuccessBackgroundThread(response);
-
-        return (Response<T>) Response.success(response, HttpHeaderParser.parseCacheHeaders(networkResponse));
-    }
-
-    /**
-     * Delivers the response on the main thread on TGIResponseListener
-     *
-     * @param response TGResponse
-     */
-    @Override
-    final protected void deliverResponse(T response) {
-        listener.onSuccessMainThread(response);
-    }
-
-    /**
-     * Delivers the error on TGIResponseListener
-     *
-     * @param error VolleyError
-     */
-    @Override
-    final public void deliverError(VolleyError error) {
-        TGResponse response = createTGResponse(error.networkResponse);
-        response.setNetworkTimeInMillis(error.getNetworkTimeMs());
-        TGError tgError = new TGException(error).getError();
-        response.setError(tgError);
-        listener.onError(response);
-    }
-
-    private TGResponse createTGResponse(NetworkResponse networkResponse) {
-        TGResponse response = new TGResponse();
-        response.setHttpStatusCode(networkResponse.statusCode);
-        response.setResponse(new String(networkResponse.data));
-        response.setHeaders(networkResponse.headers);
-        response.setNetworkTimeInMillis(networkResponse.networkTimeMs);
-        response.setModified(!networkResponse.notModified);
-        return response;
     }
 
 }

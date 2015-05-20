@@ -24,66 +24,66 @@ import java.util.Map;
  * TGResponse holds HTTP response information once TGRequest has been generated.
  */
 public class TGResponse extends TGObject{
-    private int httpStatusCode;
-    private Map<String, String> headers;
-    private String response;
-    private long networkTimeInMillis;
-    private boolean modified;
-    private TGError error;
+    private int tgStatusCode;
+    private Map<String, String> tgHeaders;
+    private String tgResponseString;
+    private long tgNetworkTimeInMillis;
+    private boolean tgModified;
+    private TGError tgError;
 
-    public int getHttpStatusCode() {
-        return httpStatusCode;
+    public int getTgStatusCode() {
+        return tgStatusCode;
     }
 
-    public void setHttpStatusCode(int httpStatusCode) {
-        this.httpStatusCode = httpStatusCode;
+    public void setTgStatusCode(int tgStatusCode) {
+        this.tgStatusCode = tgStatusCode;
     }
 
-    public String getResponse() {
-        return response;
+    public String getTgResponseString() {
+        return tgResponseString;
     }
 
-    public void setResponse(String response) {
-        this.response = response;
+    public void setTgResponseString(String tgResponseString) {
+        this.tgResponseString = tgResponseString;
     }
 
-    public Map<String, String> getHeaders() {
-        return headers;
+    public Map<String, String> getTgHeaders() {
+        return tgHeaders;
     }
 
-    public void setHeaders(Map<String, String> headers) {
-        this.headers = headers;
+    public void setTgHeaders(Map<String, String> tgHeaders) {
+        this.tgHeaders = tgHeaders;
     }
 
-    public long getNetworkTimeInMillis() {
-        return networkTimeInMillis;
+    public long getTgNetworkTimeInMillis() {
+        return tgNetworkTimeInMillis;
     }
 
-    public void setNetworkTimeInMillis(long networkTimeInMillis) {
-        this.networkTimeInMillis = networkTimeInMillis;
+    public void setTgNetworkTimeInMillis(long tgNetworkTimeInMillis) {
+        this.tgNetworkTimeInMillis = tgNetworkTimeInMillis;
     }
 
-    public boolean isModified() {
-        return modified;
+    public boolean isTgModified() {
+        return tgModified;
     }
 
-    public void setModified(boolean modified) {
-        this.modified = modified;
+    public void setTgModified(boolean tgModified) {
+        this.tgModified = tgModified;
     }
 
-    public TGError getError() {
-        return error;
+    public TGError getTgError() {
+        return tgError;
     }
 
-    public void setError(TGError error) {
-        this.error = error;
+    public void setTgError(TGError tgError) {
+        this.tgError = tgError;
     }
 
     public boolean hasError() {
-        return hasValue(error);
+        return hasValue(tgError);
     }
 
     public boolean isSuccess() {
-        return !hasValue(error);
+        return !hasValue(tgError);
     }
 }

@@ -15,7 +15,7 @@
  */
 package com.techgrains.error;
 
-import org.json.JSONException;
+import com.google.gson.JsonSyntaxException;
 
 import java.io.FileNotFoundException;
 
@@ -37,6 +37,8 @@ public class TGException extends Exception {
             this.error = TGErrorConstant.CLASS_CAST.getError();
         } else if (e instanceof FileNotFoundException) {
             this.error = TGErrorConstant.FILE_NOT_FOUND.getError();
+        } else if (e instanceof JsonSyntaxException) {
+            this.error = TGErrorConstant.NOT_VALID_JSON.getError();
         } else {
             this.error = TGErrorConstant.UNKNOWN_ERROR.getError();
         }
@@ -54,7 +56,8 @@ enum TGErrorConstant {
     UNKNOWN_ERROR(900, "Unknown Error Occured"),
     NULL_POINTER(901, "Null Pointer Exception Occurs"),
     FILE_NOT_FOUND(902, "File not found Exception"),
-    CLASS_CAST(903, "Class Cast Exception");
+    CLASS_CAST(903, "Class Cast Exception"),
+    NOT_VALID_JSON(904, "Class Cast Exception");
 
     private TGError error;
 
