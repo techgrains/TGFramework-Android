@@ -19,6 +19,9 @@ import com.google.gson.JsonSyntaxException;
 
 import java.io.FileNotFoundException;
 
+/**
+ * TGException is TGFramework exception which holds TGError in it as extended info.
+ */
 public class TGException extends Exception {
 
     private static final long serialVersionUID = 1L;

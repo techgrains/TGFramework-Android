@@ -23,7 +23,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 /**
  * TGStringRequest has been created by extending TGRequest which internally uses Volley framework.
  *
- * @param <T>
+ * @param <T> TGResponse
  */
 public class TGStringRequest<T extends TGResponse> extends TGRequest<T> {
 

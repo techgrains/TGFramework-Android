@@ -19,7 +19,17 @@ import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.techgrains.common.TGObject;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.Type;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -84,4 +94,45 @@ public class TGUtil extends TGObject {
         Gson gson = new Gson();
         return gson.fromJson(json, type);
     }
+
+    /**
+     * Read the reader and gives content as String
+     *
+     * @param reader Reader
+     * @return String
+     * @throws IOException if unable to read the reader
+     */
+    public static String readReader(Reader reader) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader br = new BufferedReader(reader);
+        String line = null;
+        while ((line = br.readLine()) != null) {
+            sb.append(line);
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    /**
+     * Read file and gives file content as String
+     *
+     * @param filename String
+     * @return String
+     * @throws IOException if unable to read file
+     */
+    public static String readFile(String filename) throws IOException {
+        return readReader(new FileReader(filename));
+    }
+
+    /**
+     * Converts InputStream to String
+     *
+     * @param inputStream InputStream
+     * @return String
+     * @throws IOException if unable to read input stream
+     */
+    public static String readInputStream(InputStream inputStream) throws IOException {
+        return readReader(new InputStreamReader(inputStream));
+    }
+
 }

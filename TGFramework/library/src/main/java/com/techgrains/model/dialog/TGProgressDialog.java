@@ -19,6 +19,9 @@ import android.support.annotation.DrawableRes;
 
 import com.techgrains.model.TGModel;
 
+/**
+ * TGProgressDialog gives quick opportunity to any TGActivity to display progress dialog without knitting any code.
+ */
 public class TGProgressDialog extends TGModel {
 
     private String title;

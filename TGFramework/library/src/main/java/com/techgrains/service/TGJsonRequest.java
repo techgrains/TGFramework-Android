@@ -31,7 +31,7 @@ import java.lang.reflect.Type;
  * TGJsonRequest encapsulates network calls and conversion of json response to custom T object.
  * It internally uses GSon library for converting string into Java objects. It supports SerializedName expression to map Json element name to java object's attribute name.
  *
- * @param <T>
+ * @param <T> TGResponse
  */
 public class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
 
@@ -58,19 +58,43 @@ public class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
         TGResponse response = createTGResponse(networkResponse);
         try {
             Type type = new TypeToken<T>(){}.getType();
-            T jsonObject = (T) TGUtil.fromJson(response.getTgResponseString(), type);
+            T jsonObject = (T) TGUtil.fromJson(response.getResponse(), type);
 
             // Successful Json conversion to T object
+            populateTGResponseCoreInfo(response, (TGResponse) jsonObject);
             listener.onSuccessBackgroundThread(jsonObject);
             return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(networkResponse));
 
         } catch (JsonSyntaxException jse) {
-            response.setTgError(new TGException(jse).getError());
+            response.setError(new TGException(jse).getError());
+            response.getError().setMessage("Unable to convert json response to object. Please check JSon Syntax from TGResponse.response with mapped class.");
+        } catch (ClassCastException cce) {
+            response.setError(new TGException(cce).getError());
+            response.getError().setMessage("Unable to convert json response to object. Please check TGResponse.response string.");
+        } catch (Exception e) {
+            response.setError(new TGException(e).getError());
+            response.getError().setMessage(e.getMessage());
         }
 
         // Unsuccessful Json conversion return core TGResponse having response string
         listener.onSuccessBackgroundThread(response);
         return (Response<T>) Response.success(response, HttpHeaderParser.parseCacheHeaders(networkResponse));
+    }
+
+    /**
+     * Copy core TGResponse info from source to destination.
+     *
+     * @param source TGResponse
+     * @param jsonObject TGResponse
+     */
+    private void populateTGResponseCoreInfo(TGResponse source, TGResponse jsonObject) {
+        if(source!=null && jsonObject!=null) {
+            jsonObject.setStatusCode(source.getStatusCode());
+            jsonObject.setResponse(new String(source.getResponse()));
+            jsonObject.setHeaders(source.getHeaders());
+            jsonObject.setNetworkTimeInMillis(source.getNetworkTimeInMillis());
+            jsonObject.setModified(source.isModified());
+        }
     }
 
     /**

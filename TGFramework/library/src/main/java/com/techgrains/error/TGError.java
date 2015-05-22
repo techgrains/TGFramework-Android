@@ -15,6 +15,9 @@
  */
 package com.techgrains.error;
 
+/**
+ * TGError represents common implementation of error having "code" and "message".
+ */
 public class TGError {
 
     private int code;

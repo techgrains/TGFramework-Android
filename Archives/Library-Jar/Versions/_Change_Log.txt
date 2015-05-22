@@ -2,9 +2,14 @@ Change Log:
 ===========
 
 :: 1.1
+- Enabled TGService as TGFramework's service layer wrapper
 - Volley based Request-Response structure (TGRequest, TGResponse etc.)
+- TGRequestQueue, TGJsonRequest and TGStringRequest wrapper implementation
+- Support for TDD with mock request creating through file based mock json response.
 - Custom object creation from JSON string using Gson library. (TGUtil)
 - Introduction of Exception and Error related classes (TGException, TGError)
+- TGUtil gives utility to read File, InputStream or Reader.
+- TGAndroidUtil gives utility to read file from assets.
 
 :: 1.0
 - Purpose of TGFramework is to provide developer friendly library, that can help to improve feature development rather focusing on common structure creation during every mobile app development. 

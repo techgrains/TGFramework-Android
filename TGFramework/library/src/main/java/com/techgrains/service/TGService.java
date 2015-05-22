@@ -17,5 +17,55 @@ package com.techgrains.service;
 
 import com.techgrains.common.TGObject;
 
+/**
+ * TGService is the TGFramework's service layer wrapper class.
+ */
 public class TGService extends TGObject {
+
+    /**
+     * Performs TGJsonRequest which gives TGResponse based on the JSon output.
+     * @param request TGJsonRequest
+     */
+    public static void performJsonRequest(TGJsonRequest<?> request) {
+        TGRequestQueue.getInstance().addRequest(request);
+    }
+
+    /**
+     * Performs TGStringRequest which gives TGResponse based on the output.
+     * @param request TGStringRequest
+     */
+    public static void performStringRequest(TGStringRequest<?> request) {
+        TGRequestQueue.getInstance().addRequest(request);
+    }
+
+    /**
+     * Cancels the request to be performed. If request has been initiated on the network already, it will drop the response and ignores to update listeners.
+     * @param request TGRequest
+     */
+    public static void cancelRequest(TGRequest request) {
+        request.cancel();
+    }
+
+    /**
+     * Cancel requests by tag.
+     * @param tag Object
+     */
+    public static void cancelRequestByTag(Object tag) {
+        TGRequestQueue.getInstance().cancelRequestByTag(tag);
+    }
+
+    /**
+     * Start requests to be performed from the dispatcher
+     */
+    public static void startRequests() {
+        TGRequestQueue.getInstance().startRequests();
+    }
+
+    /**
+     * Stop request to be dispatched further
+     */
+    public static void stopRequests() {
+        TGRequestQueue.getInstance().stopRequests();
+    }
+
 }

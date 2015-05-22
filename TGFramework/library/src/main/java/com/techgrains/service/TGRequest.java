@@ -34,7 +34,7 @@ import java.util.Map;
  *
  * @param <T> where T is instance of TGResponse
  */
-public abstract class TGRequest <T extends TGResponse> extends Request<T>{
+public abstract class TGRequest<T extends TGResponse> extends Request<T>{
     private static final String API_HEADER_USERAGENT = "User-Agent";
     private static final String API_HEADER_API = "API";
     private static final String API_HEADER_VERSION = "Ver";
@@ -97,19 +97,21 @@ public abstract class TGRequest <T extends TGResponse> extends Request<T>{
     @Override
     public void deliverError(VolleyError error) {
         TGResponse response = createTGResponse(error.networkResponse);
-        response.setTgNetworkTimeInMillis(error.getNetworkTimeMs());
+        response.setNetworkTimeInMillis(error.getNetworkTimeMs());
         TGError tgError = new TGException(error).getError();
-        response.setTgError(tgError);
+        response.setError(tgError);
         listener.onError(response);
     }
 
     TGResponse createTGResponse(NetworkResponse networkResponse) {
         TGResponse response = new TGResponse();
-        response.setTgStatusCode(networkResponse.statusCode);
-        response.setTgResponseString(new String(networkResponse.data));
-        response.setTgHeaders(networkResponse.headers);
-        response.setTgNetworkTimeInMillis(networkResponse.networkTimeMs);
-        response.setTgModified(!networkResponse.notModified);
+        if(networkResponse!=null) {
+            response.setStatusCode(networkResponse.statusCode);
+            response.setResponse(new String(networkResponse.data));
+            response.setHeaders(networkResponse.headers);
+            response.setNetworkTimeInMillis(networkResponse.networkTimeMs);
+            response.setModified(!networkResponse.notModified);
+        }
         return response;
     }
 

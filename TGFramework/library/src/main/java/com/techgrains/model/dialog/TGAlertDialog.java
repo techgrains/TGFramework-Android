@@ -20,6 +20,9 @@ import android.support.annotation.DrawableRes;
 
 import com.techgrains.model.TGModel;
 
+/**
+ * TGAlertDialog gives quick opportunity to any TGActivity to display alert dialog without knitting any code.
+ */
 public class TGAlertDialog extends TGModel {
 
     private String title;
@@ -48,6 +51,8 @@ public class TGAlertDialog extends TGModel {
     }
 
     /**
+     * Retuns neutral button text.
+     *
      * @return String : Neutral button text
      */
     public String getNeutralButtonText() {
@@ -217,9 +222,13 @@ public class TGAlertDialog extends TGModel {
         return icon;
     }
 
+    /**
+     * Sets icon of the alert dialog
+     *
+     * @param icon int
+     */
     public void setIcon(@DrawableRes int icon) {
         this.icon = icon;
     }
-
 
 }
