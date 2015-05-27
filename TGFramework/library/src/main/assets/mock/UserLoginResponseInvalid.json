@@ -1,0 +1,10 @@
+{
+  "data": {
+    "user": {
+      "id": 15,
+      "name": "vishal",
+      "age": 35
+    },
+    "departments":123
+  }
+}

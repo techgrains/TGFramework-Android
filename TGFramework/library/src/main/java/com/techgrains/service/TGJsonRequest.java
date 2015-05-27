@@ -15,6 +15,8 @@
  */
 package com.techgrains.service;
 
+import android.util.Log;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -53,32 +55,24 @@ public class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
     @Override
     final protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
         TGResponse response = createTGResponse(networkResponse);
-
-        T jsonObject = null;
         try {
-            // Successful Json conversion to T object
-            jsonObject = (T)TGUtil.fromJson(response.getResponse(), getType());
+            T jsonObject = (T)TGUtil.fromJson(response.getResponse(), getType());
+            populateTGResponseCoreInfo(response, jsonObject);
+
+            listener.onSuccessBackgroundThread(jsonObject);
+            return Response.success((T)jsonObject, HttpHeaderParser.parseCacheHeaders(networkResponse));
 
         } catch (JsonSyntaxException jse) {
             response.setError(new TGException(jse).getError());
-            response.getError().setMessage("Unable to convert json response to object. Please check JSon Syntax from getResponse().");
+            response.getError().setMessage("Unable to convert json response to object. Please match JSon syntax with expected response object.");
         } catch (ClassCastException cce) {
             response.setError(new TGException(cce).getError());
             response.getError().setMessage("Unable to convert json response to object. " + cce.getMessage());
         } catch (Exception e) {
             response.setError(new TGException(e).getError());
-            response.getError().setMessage(e.getMessage());
         }
-
-        // Creates empty placeholder object
-        if(jsonObject == null)
-            jsonObject = (T) TGUtil.fromJson("{}", getType());
-
-        // Populates other response info
-        populateTGResponseCoreInfo(response, jsonObject);
-
-        listener.onSuccessBackgroundThread(jsonObject);
-        return Response.success((T)jsonObject, HttpHeaderParser.parseCacheHeaders(networkResponse));
+        listener.onError(response);
+        return Response.success(null, HttpHeaderParser.parseCacheHeaders(networkResponse));
     }
 
     /**

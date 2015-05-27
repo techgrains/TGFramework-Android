@@ -18,6 +18,8 @@ package com.techgrains.service;
 import android.util.Log;
 
 import com.google.gson.reflect.TypeToken;
+import com.techgrains.error.TGError;
+import com.techgrains.error.TGException;
 import com.techgrains.util.TGAndroidUtil;
 import com.techgrains.util.TGUtil;
 
@@ -59,7 +61,7 @@ public class TGRequestQueueTest  extends TestCase {
         assertUserLoginResponse(response);
     }
 
-    public void testMockFileRequestSuccess() throws InterruptedException {
+    public void testMockFileRequest_Success() throws InterruptedException {
         try {
             int method = TGRequest.Method.POST;
             String url = "mock/UserLoginResponse.json";
@@ -71,7 +73,7 @@ public class TGRequestQueueTest  extends TestCase {
 
             UserLoginRequestTest userLoginRequestTest = new UserLoginRequestTest(method, url, listener, params);
             requestQueue.addRequest(userLoginRequestTest);
-            Thread.sleep(3000);
+            Thread.sleep(2000);
             assertUserLoginResponse(userLoginResponseTest);
 
         } catch(Exception e) {
@@ -79,7 +81,7 @@ public class TGRequestQueueTest  extends TestCase {
         }
     }
 
-    public void testMockFileRequestFailure() throws InterruptedException {
+    public void testMockFileRequest_FileNotExists() throws InterruptedException {
         try {
             int method = TGRequest.Method.POST;
             String url = "mock/FileNotExists.json";
@@ -89,9 +91,28 @@ public class TGRequestQueueTest  extends TestCase {
 
             UserLoginRequestTest userLoginRequestTest = new UserLoginRequestTest(method, url, listener, params);
             requestQueue.addRequest(userLoginRequestTest);
-            Thread.sleep(3000);
-            assertEquals(200, userLoginResponseTest.getStatusCode());
+            Thread.sleep(2000);
             assertEquals("{ERROR:FILE_DOES_NOT_EXIST}", userLoginResponseTest.getResponse());
+
+        } catch(Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    public void testMockFileRequest_InvalidFile() throws InterruptedException {
+        try {
+            int method = TGRequest.Method.POST;
+            String url = "mock/UserLoginResponseInvalid.json";
+            TGParams params = new TGParams();
+
+            TGIResponseListener<UserLoginResponseTest> listener = getTgiResponseListenerImpl();
+
+            UserLoginRequestTest userLoginRequestTest = new UserLoginRequestTest(method, url, listener, params);
+            requestQueue.addRequest(userLoginRequestTest);
+            Thread.sleep(2000);
+            assertNull(userLoginResponseTest);
+            assertEquals(904, tgResponse.getError().getCode());
+            assertTrue(tgResponse.getError().getMessage().startsWith("Unable to convert json response to object."));
 
         } catch(Exception e) {
             fail(e.getMessage());
@@ -115,7 +136,7 @@ public class TGRequestQueueTest  extends TestCase {
             @Override
             public void onError(TGResponse response) {
                 Log.d(LOG_TAG, "Callback: onError");
-                Log.d(LOG_TAG, "response="+response.getClass());
+                Log.d(LOG_TAG, "response class="+response.getClass());
                 Log.d(LOG_TAG, "code="+response.getError().getCode());
                 Log.d(LOG_TAG, "message="+response.getError().getMessage());
                 Log.d(LOG_TAG, "response="+response.getResponse());

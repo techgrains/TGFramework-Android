@@ -107,7 +107,6 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
     @Override
     public void deliverError(VolleyError error) {
         TGResponse response = createTGResponse(error.networkResponse);
-        response.setNetworkTimeInMillis(error.getNetworkTimeMs());
         TGError tgError = new TGException(error).getError();
         response.setError(tgError);
         listener.onError(response);
