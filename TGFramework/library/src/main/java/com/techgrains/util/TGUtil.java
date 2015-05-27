@@ -108,7 +108,7 @@ public class TGUtil extends TGObject {
         String line = null;
         while ((line = br.readLine()) != null) {
             sb.append(line);
-            sb.append("\n");
+//            sb.append("\n");
         }
         return sb.toString();
     }

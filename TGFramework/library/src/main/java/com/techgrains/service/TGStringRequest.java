@@ -19,6 +19,10 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.google.gson.reflect.TypeToken;
+import com.techgrains.util.TGUtil;
+
+import java.lang.reflect.Type;
 
 /**
  * TGStringRequest has been created by extending TGRequest which internally uses Volley framework.
@@ -48,7 +52,11 @@ public class TGStringRequest<T extends TGResponse> extends TGRequest<T> {
     @Override
     final protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
         TGResponse response = createTGResponse(networkResponse);
-        listener.onSuccessBackgroundThread(response);
+
+        T t = (T) TGUtil.fromJson("{}", new TypeToken<T>(){}.getType());
+
+        populateTGResponseCoreInfo(response, t);
+        listener.onSuccessBackgroundThread(t);
         return (Response<T>) Response.success(response, HttpHeaderParser.parseCacheHeaders(networkResponse));
     }
 

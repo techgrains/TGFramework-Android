@@ -17,21 +17,22 @@ package com.techgrains.service;
 
 /**
  * Listener interface for TGRequest. Gives TGResponse on all call back listener methods.
+ * @param <T> Custom response object
  */
-public interface TGIResponseListener {
+public interface TGIResponseListener<T extends TGResponse> {
     /**
      * Callback method on Main thread upon successful response.
      *
      * @param response TGResponse
      */
-    void onSuccessMainThread(TGResponse response);
+    void onSuccessMainThread(T response);
 
     /**
      * Callback method on Background thread upon successful response.
      *
      * @param response TGResponse
      */
-    void onSuccessBackgroundThread(TGResponse response);
+    void onSuccessBackgroundThread(T response);
 
     /**
      * Callback method upon errornous response.

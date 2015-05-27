@@ -20,11 +20,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.techgrains.error.TGException;
 import com.techgrains.util.TGUtil;
-
-import java.lang.reflect.Type;
 
 /**
  * TGJsonRequest has been created by extending TGRequest which internally uses Volley framework.
@@ -56,45 +53,32 @@ public class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
     @Override
     final protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
         TGResponse response = createTGResponse(networkResponse);
-        try {
-            Type type = new TypeToken<T>(){}.getType();
-            T jsonObject = (T) TGUtil.fromJson(response.getResponse(), type);
 
+        T jsonObject = null;
+        try {
             // Successful Json conversion to T object
-            populateTGResponseCoreInfo(response, (TGResponse) jsonObject);
-            listener.onSuccessBackgroundThread(jsonObject);
-            return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(networkResponse));
+            jsonObject = (T)TGUtil.fromJson(response.getResponse(), getType());
 
         } catch (JsonSyntaxException jse) {
             response.setError(new TGException(jse).getError());
-            response.getError().setMessage("Unable to convert json response to object. Please check JSon Syntax from TGResponse.response with mapped class.");
+            response.getError().setMessage("Unable to convert json response to object. Please check JSon Syntax from getResponse().");
         } catch (ClassCastException cce) {
             response.setError(new TGException(cce).getError());
-            response.getError().setMessage("Unable to convert json response to object. Please check TGResponse.response string.");
+            response.getError().setMessage("Unable to convert json response to object. " + cce.getMessage());
         } catch (Exception e) {
             response.setError(new TGException(e).getError());
             response.getError().setMessage(e.getMessage());
         }
 
-        // Unsuccessful Json conversion return core TGResponse having response string
-        listener.onSuccessBackgroundThread(response);
-        return (Response<T>) Response.success(response, HttpHeaderParser.parseCacheHeaders(networkResponse));
-    }
+        // Creates empty placeholder object
+        if(jsonObject == null)
+            jsonObject = (T) TGUtil.fromJson("{}", getType());
 
-    /**
-     * Copy core TGResponse info from source to destination.
-     *
-     * @param source TGResponse
-     * @param jsonObject TGResponse
-     */
-    private void populateTGResponseCoreInfo(TGResponse source, TGResponse jsonObject) {
-        if(source!=null && jsonObject!=null) {
-            jsonObject.setStatusCode(source.getStatusCode());
-            jsonObject.setResponse(new String(source.getResponse()));
-            jsonObject.setHeaders(source.getHeaders());
-            jsonObject.setNetworkTimeInMillis(source.getNetworkTimeInMillis());
-            jsonObject.setModified(source.isModified());
-        }
+        // Populates other response info
+        populateTGResponseCoreInfo(response, jsonObject);
+
+        listener.onSuccessBackgroundThread(jsonObject);
+        return Response.success((T)jsonObject, HttpHeaderParser.parseCacheHeaders(networkResponse));
     }
 
     /**

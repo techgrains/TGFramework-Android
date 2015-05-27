@@ -15,58 +15,51 @@
  */
 package com.techgrains.service;
 
-import android.content.res.AssetManager;
-import android.test.ApplicationTestCase;
-import android.test.InstrumentationTestCase;
 import android.util.Log;
 
-import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
-import com.techgrains.application.TGApplication;
 import com.techgrains.util.TGAndroidUtil;
 import com.techgrains.util.TGUtil;
 
 import junit.framework.TestCase;
-import junit.framework.Assert;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.URL;
-import java.util.List;
 
 public class TGRequestQueueTest  extends TestCase {
 
     final static String LOG_TAG = "TG_LOG";
     final static String MOCK_DIR = "mock";
-    public static TGResponse tgResponse;
-    TGRequestQueue requestQueue;
+    private static TGResponse tgResponse;
+    private static UserLoginResponseTest userLoginResponseTest;
+    private TGRequestQueue requestQueue;
 
     public void setUp() {
         requestQueue = TGRequestQueue.getInstance();
     }
 
+    public void testClassTypeCreationUsingTypeToken() {
+        Type type = new TypeToken<TGResponse>(){}.getType();
+        Object jsonObject = TGUtil.fromJson("{}", type);
+        assertNotNull(jsonObject);
+        assertTrue(jsonObject instanceof TGResponse);
+    }
+
     public void testReadMockFileAndConvertToJson() throws IOException {
         String filename = MOCK_DIR + "/UserLoginResponse.json";
         String content = TGAndroidUtil.readFileFromAssets(filename);
+
         // Confirms content having value. Means, read file correctly.
         assertTrue(TGUtil.hasValue(content));
 
-        Log.d(LOG_TAG, content);
+//        Log.d(LOG_TAG, "File Content:" + content);
 
-        Type type = new TypeToken<UserLoginResponse>(){}.getType();
-        UserLoginResponse response = (UserLoginResponse) TGUtil.fromJson(content, type);
-        assertNotNull(response);
-        assertEquals(15, response.getData().getUser().getId());
-        assertEquals("vishal", response.getData().getUser().getName());
-        assertEquals(35, response.getData().getUser().getAge());
-        assertNotNull(response.getData().getDepartments());
-        assertEquals(2, response.getData().getDepartments().size());
-        assertEquals("it", response.getData().getDepartments().get(0));
-        assertEquals("hr", response.getData().getDepartments().get(1));
+        Type type = new TypeToken<UserLoginResponseTest>(){}.getType();
+        UserLoginResponseTest response = (UserLoginResponseTest) TGUtil.fromJson(content, type);
+        assertUserLoginResponse(response);
     }
 
-    public void testMockFileRequest() throws InterruptedException {
+    public void testMockFileRequestSuccess() throws InterruptedException {
         try {
             int method = TGRequest.Method.POST;
             String url = "mock/UserLoginResponse.json";
@@ -74,71 +67,78 @@ public class TGRequestQueueTest  extends TestCase {
             params.putParam("username", "vishal");
             params.putParam("password", "patel");
 
-            TGIResponseListener listener = new TGIResponseListener() {
-                @Override
-                public void onSuccessMainThread(TGResponse response) {
-                    Log.d(LOG_TAG,"onSuccessMainThread");
-                    tgResponse = response;
-                }
+            TGIResponseListener<UserLoginResponseTest> listener = getTgiResponseListenerImpl();
 
-                @Override
-                public void onSuccessBackgroundThread(TGResponse response) {
-                    Log.d(LOG_TAG, "onSuccessBackgroundThread");
-                    tgResponse = response;
-                }
-
-                @Override
-                public void onError(TGResponse response) {
-                    Log.d(LOG_TAG, "onError");
-                    tgResponse = response;
-                }
-            };
-
-            UserLoginRequest userLoginRequest = new UserLoginRequest(method, url, listener, params);
-            requestQueue.addRequest(userLoginRequest);
+            UserLoginRequestTest userLoginRequestTest = new UserLoginRequestTest(method, url, listener, params);
+            requestQueue.addRequest(userLoginRequestTest);
             Thread.sleep(3000);
-            assertEquals("{ERROR:FILE_DOES_NOT_EXIST}", tgResponse.getResponse());
+            assertUserLoginResponse(userLoginResponseTest);
 
         } catch(Exception e) {
             fail(e.getMessage());
         }
     }
 
+    public void testMockFileRequestFailure() throws InterruptedException {
+        try {
+            int method = TGRequest.Method.POST;
+            String url = "mock/FileNotExists.json";
+            TGParams params = new TGParams();
+
+            TGIResponseListener<UserLoginResponseTest> listener = getTgiResponseListenerImpl();
+
+            UserLoginRequestTest userLoginRequestTest = new UserLoginRequestTest(method, url, listener, params);
+            requestQueue.addRequest(userLoginRequestTest);
+            Thread.sleep(3000);
+            assertEquals(200, userLoginResponseTest.getStatusCode());
+            assertEquals("{ERROR:FILE_DOES_NOT_EXIST}", userLoginResponseTest.getResponse());
+
+        } catch(Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    private TGIResponseListener<UserLoginResponseTest> getTgiResponseListenerImpl() {
+        return new TGIResponseListener<UserLoginResponseTest>() {
+            @Override
+            public void onSuccessMainThread(UserLoginResponseTest response) {
+                Log.d(LOG_TAG, "onSuccessMainThread");
+                userLoginResponseTest = response;
+            }
+
+            @Override
+            public void onSuccessBackgroundThread(UserLoginResponseTest response) {
+                Log.d(LOG_TAG, "onSuccessBackgroundThread");
+                userLoginResponseTest = response;
+            }
+
+            @Override
+            public void onError(TGResponse response) {
+                Log.d(LOG_TAG, "Callback: onError");
+                Log.d(LOG_TAG, "response="+response.getClass());
+                Log.d(LOG_TAG, "code="+response.getError().getCode());
+                Log.d(LOG_TAG, "message="+response.getError().getMessage());
+                Log.d(LOG_TAG, "response="+response.getResponse());
+                tgResponse = response;
+            }
+        };
+    }
+
+    private void assertUserLoginResponse(UserLoginResponseTest userLoginResponseTest) {
+        assertNotNull(userLoginResponseTest);
+        assertEquals(15, userLoginResponseTest.getDataTest().getUser().getId());
+        assertEquals("vishal", userLoginResponseTest.getDataTest().getUser().getName());
+        assertEquals(35, userLoginResponseTest.getDataTest().getUser().getAge());
+        assertNotNull(userLoginResponseTest.getDataTest().getDepartments());
+        assertEquals(2, userLoginResponseTest.getDataTest().getDepartments().size());
+        assertEquals("it", userLoginResponseTest.getDataTest().getDepartments().get(0));
+        assertEquals("hr", userLoginResponseTest.getDataTest().getDepartments().get(1));
+    }
+
     public void tearDown() {
         requestQueue = null;
+        tgResponse = null;
+        userLoginResponseTest = null;
     }
 }
 
-class UserLoginRequest extends TGJsonRequest<UserLoginResponse> {
-    public UserLoginRequest(int method, String url, TGIResponseListener listener, TGParams params) {
-        super(method, url, listener, params);
-        setShouldCache(false);
-    }
-}
-
-class UserLoginResponse extends TGResponse {
-    @SerializedName("data")
-    private Data data;
-    public Data getData() { return data; }
-}
-
-class Data {
-    @SerializedName("user")
-    User user;
-    @SerializedName("departments")
-    private List<String> departments;
-    public User getUser() { return user; }
-    public List<String> getDepartments() { return departments; }
-}
-
-class User {
-    @SerializedName("id")
-    private long id;
-    @SerializedName("name")
-    private String name;
-    @SerializedName("age")
-    private int age;
-    public long getId() { return id; }
-    public String getName() { return name; }
-    public int getAge() { return age; }
-}

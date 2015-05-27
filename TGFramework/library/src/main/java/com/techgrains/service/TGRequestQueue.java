@@ -25,7 +25,7 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.HurlStack;
 import com.techgrains.application.TGApplication;
-import com.techgrains.util.TGUtil;
+import com.techgrains.util.TGAndroidUtil;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -148,7 +148,7 @@ class FileStack implements HttpStack {
 
     private HttpEntity createEntity(Request request) throws UnsupportedEncodingException {
         try {
-            String string = TGUtil.readFile(request.getUrl());
+            String string = TGAndroidUtil.readFileFromAssets(request.getUrl());
             return new StringEntity(string);
         } catch (FileNotFoundException e) {
             e.printStackTrace();

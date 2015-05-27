@@ -17,6 +17,7 @@ package com.techgrains.service;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -26,6 +27,7 @@ import com.techgrains.application.TGApplication;
 import com.techgrains.error.TGError;
 import com.techgrains.error.TGException;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +37,8 @@ import java.util.Map;
  * @param <T> where T is instance of TGResponse
  */
 public abstract class TGRequest<T extends TGResponse> extends Request<T>{
+    final static String LOG_TAG = "TG_LOG";
+
     private static final String API_HEADER_USERAGENT = "User-Agent";
     private static final String API_HEADER_API = "API";
     private static final String API_HEADER_VERSION = "Ver";
@@ -42,7 +46,12 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
     private static String userAgent = null;
 
     private TGParams params;
-    TGIResponseListener listener;
+    TGIResponseListener<T> listener;
+
+    private final Class<T> type;
+    public Class<T> getType() {
+        return this.type;
+    }
 
     /**
      * Intialize TGRequest
@@ -56,6 +65,7 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
         super(method, url, null);
         this.listener = listener;
         this.params = params;
+        this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     /**
@@ -113,6 +123,22 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
             response.setModified(!networkResponse.notModified);
         }
         return response;
+    }
+
+    /**
+     * Copy core TGResponse info from source to destination.
+     *
+     * @param source TGResponse
+     * @param jsonObject TGResponse
+     */
+    void populateTGResponseCoreInfo(TGResponse source, TGResponse jsonObject) {
+        if(source!=null && jsonObject!=null) {
+            jsonObject.setStatusCode(source.getStatusCode());
+            jsonObject.setResponse(new String(source.getResponse()));
+            jsonObject.setHeaders(source.getHeaders());
+            jsonObject.setNetworkTimeInMillis(source.getNetworkTimeInMillis());
+            jsonObject.setModified(source.isModified());
+        }
     }
 
     private static String getUserAgent() {
