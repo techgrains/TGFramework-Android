@@ -64,7 +64,7 @@ public class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
 
         } catch (JsonSyntaxException jse) {
             response.setError(new TGException(jse).getError());
-            response.getError().setMessage("Unable to convert json response to object. Please match JSon syntax with expected response object.");
+            response.getError().setMessage("Unable to convert json response to object. Please match JSon syntax with expected response object." + jse.getMessage());
         } catch (ClassCastException cce) {
             response.setError(new TGException(cce).getError());
             response.getError().setMessage("Unable to convert json response to object. " + cce.getMessage());

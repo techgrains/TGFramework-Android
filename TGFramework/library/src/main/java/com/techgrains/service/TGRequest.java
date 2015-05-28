@@ -28,6 +28,8 @@ import com.techgrains.error.TGError;
 import com.techgrains.error.TGException;
 
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,8 +50,8 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
     private TGParams params;
     TGIResponseListener<T> listener;
 
-    private final Class<T> type;
-    public Class<T> getType() {
+    private final Type type;
+    public Type getType() {
         return this.type;
     }
 
@@ -65,7 +67,7 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
         super(method, url, null);
         this.listener = listener;
         this.params = params;
-        this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+        this.type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
     /**

@@ -20,6 +20,9 @@ import android.util.Log;
 import com.google.gson.reflect.TypeToken;
 import com.techgrains.error.TGError;
 import com.techgrains.error.TGException;
+import com.techgrains.service.model.ApiResponse;
+import com.techgrains.service.model.CityList;
+import com.techgrains.service.model.CityListRequest;
 import com.techgrains.util.TGAndroidUtil;
 import com.techgrains.util.TGUtil;
 
@@ -35,6 +38,7 @@ public class TGRequestQueueTest  extends TestCase {
     private static TGResponse tgResponse;
     private static UserLoginResponseTest userLoginResponseTest;
     private TGRequestQueue requestQueue;
+    private static ApiResponse<CityList> apiResponseCityList;
 
     public void setUp() {
         requestQueue = TGRequestQueue.getInstance();
@@ -75,6 +79,42 @@ public class TGRequestQueueTest  extends TestCase {
             requestQueue.addRequest(userLoginRequestTest);
             Thread.sleep(2000);
             assertUserLoginResponse(userLoginResponseTest);
+
+        } catch(Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    public void testMockFileRequestCityList_Success() throws InterruptedException {
+        try {
+            int method = TGRequest.Method.POST;
+            String url = "mock/CityListResponse.json";
+            TGParams params = new TGParams();
+
+            TGIResponseListener<ApiResponse<CityList>> listener = new TGIResponseListener<ApiResponse<CityList>>() {
+                @Override
+                public void onSuccessMainThread(ApiResponse<CityList> response) {
+                    Log.d(LOG_TAG, "onSuccessMainThread");
+                    apiResponseCityList = response;
+                }
+
+                @Override
+                public void onSuccessBackgroundThread(ApiResponse<CityList> response) {
+                    Log.d(LOG_TAG, "onSuccessBackgroundThread");
+                    apiResponseCityList = response;
+                }
+
+                @Override
+                public void onError(TGResponse response) {
+                    Log.d(LOG_TAG, "onError");
+                    tgResponse = response;
+                }
+            };
+
+            CityListRequest cityListRequest = new CityListRequest(method, url, listener, params);
+            requestQueue.addRequest(cityListRequest);
+            Thread.sleep(2000);
+            assertCityListResponse(apiResponseCityList);
 
         } catch(Exception e) {
             fail(e.getMessage());
@@ -154,6 +194,13 @@ public class TGRequestQueueTest  extends TestCase {
         assertEquals(2, userLoginResponseTest.getDataTest().getDepartments().size());
         assertEquals("it", userLoginResponseTest.getDataTest().getDepartments().get(0));
         assertEquals("hr", userLoginResponseTest.getDataTest().getDepartments().get(1));
+    }
+
+    private void assertCityListResponse(ApiResponse<CityList> apiResponseCityList) {
+        assertNotNull(apiResponseCityList);
+        assertEquals(true, apiResponseCityList.getRes().isSuccess());
+        assertEquals(3, apiResponseCityList.getRes().getData().getCity().size());
+        assertEquals("Vadodara", apiResponseCityList.getRes().getData().getCity().get(0).getName());
     }
 
     public void tearDown() {
