@@ -32,7 +32,7 @@ import com.techgrains.util.TGUtil;
  *
  * @param <T> TGResponse
  */
-public class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
+public abstract class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
 
     /**
      * Initialize TGJsonRequest
@@ -66,6 +66,7 @@ public class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
             response.setError(new TGException(jse).getError());
             response.getError().setMessage("Unable to convert json response to object. Please match JSon syntax with expected response object." + jse.getMessage());
         } catch (ClassCastException cce) {
+            cce.printStackTrace();
             response.setError(new TGException(cce).getError());
             response.getError().setMessage("Unable to convert json response to object. " + cce.getMessage());
         } catch (Exception e) {

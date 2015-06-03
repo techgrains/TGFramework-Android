@@ -20,8 +20,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-
 public class MainActivity extends Activity {
+    public static String LOG = "LOG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +40,5 @@ public class MainActivity extends Activity {
             }
         });
     }
-
 
 }

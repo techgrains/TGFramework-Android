@@ -18,8 +18,6 @@ package com.techgrains.service;
 import android.util.Log;
 
 import com.google.gson.reflect.TypeToken;
-import com.techgrains.error.TGError;
-import com.techgrains.error.TGException;
 import com.techgrains.service.model.ApiResponse;
 import com.techgrains.service.model.CityList;
 import com.techgrains.service.model.CityListRequest;
@@ -176,10 +174,6 @@ public class TGRequestQueueTest  extends TestCase {
             @Override
             public void onError(TGResponse response) {
                 Log.d(LOG_TAG, "Callback: onError");
-                Log.d(LOG_TAG, "response class="+response.getClass());
-                Log.d(LOG_TAG, "code="+response.getError().getCode());
-                Log.d(LOG_TAG, "message="+response.getError().getMessage());
-                Log.d(LOG_TAG, "response="+response.getResponse());
                 tgResponse = response;
             }
         };
