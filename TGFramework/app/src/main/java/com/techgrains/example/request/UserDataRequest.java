@@ -1,5 +1,7 @@
-package com.techgrains.example.model;
+package com.techgrains.example.request;
 
+import com.techgrains.example.model.ApiResponse;
+import com.techgrains.example.model.UserData;
 import com.techgrains.service.TGIResponseListener;
 import com.techgrains.service.TGJsonRequest;
 import com.techgrains.service.TGParams;

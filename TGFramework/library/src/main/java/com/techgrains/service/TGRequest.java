@@ -23,6 +23,7 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.google.gson.reflect.TypeToken;
 import com.techgrains.application.TGApplication;
 import com.techgrains.error.TGError;
 import com.techgrains.error.TGException;
@@ -31,6 +32,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -63,7 +65,7 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
      * @param listener TGIResponseListener
      * @param params TGParams
      */
-    public TGRequest(int method, String url, TGIResponseListener listener, TGParams params) {
+    public TGRequest(int method, String url, TGIResponseListener<T> listener, TGParams params) {
         super(method, url, null);
         this.listener = listener;
         this.params = params;
@@ -71,11 +73,26 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
     }
 
     /**
-     * Params of the TGRequest
+     * Intialize TGRequest
      *
-     * @return Map
-     * @throws AuthFailureError Auth Fails
+     * @param method i.e., TGRequest.Method.POST
+     * @param url String
+     * @param listener TGIResponseListener
+     * @param params TGParams
+     * @param type Type (Reflection Type) Provide type: {@code Type type = new TypeToken<Employee>(){}.getType();}
      */
+    public TGRequest(int method, String url, TGIResponseListener<T> listener, TGParams params, Type type) {
+        super(method, url, null);
+        this.listener = listener;
+        this.params = params;
+        this.type = type;
+    }
+        /**
+         * Params of the TGRequest
+         *
+         * @return Map
+         * @throws AuthFailureError Auth Fails
+         */
     final protected Map<String, String> getParams() throws AuthFailureError {
         return params.getParams();
     }
@@ -98,7 +115,8 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
      */
     @Override
     protected void deliverResponse(T response) {
-        listener.onSuccessMainThread(response);
+        if(response!=null)
+            listener.onSuccessMainThread(response);
     }
 
     /**
@@ -111,7 +129,8 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
         TGResponse response = createTGResponse(error.networkResponse);
         TGError tgError = new TGException(error).getError();
         response.setError(tgError);
-        listener.onError(response);
+        if(response!=null)
+            listener.onError(response);
     }
 
     TGResponse createTGResponse(NetworkResponse networkResponse) {

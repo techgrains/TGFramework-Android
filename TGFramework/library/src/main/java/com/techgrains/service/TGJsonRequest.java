@@ -25,6 +25,8 @@ import com.google.gson.JsonSyntaxException;
 import com.techgrains.error.TGException;
 import com.techgrains.util.TGUtil;
 
+import java.lang.reflect.Type;
+
 /**
  * TGJsonRequest has been created by extending TGRequest which internally uses Volley framework.
  * TGJsonRequest encapsulates network calls and conversion of json response to custom T object.
@@ -42,8 +44,21 @@ public abstract class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
      * @param listener TGIResponseListener
      * @param params TGParams
      */
-    public TGJsonRequest(int method, String url, TGIResponseListener listener, TGParams params) {
+    public TGJsonRequest(int method, String url, TGIResponseListener<T> listener, TGParams params) {
         super(method, url, listener, params);
+    }
+
+    /**
+     * Initialize TGJsonRequest
+     *
+     * @param method i.e., TGRequest.Method.POST
+     * @param url String
+     * @param listener TGIResponseListener
+     * @param params TGParams
+     * @param type Type (Reflection Type) Provide type: {@code Type type = new TypeToken<Employee>(){}.getType();}
+     */
+    public TGJsonRequest(int method, String url, TGIResponseListener<T> listener, TGParams params, Type type) {
+        super(method, url, listener, params, type);
     }
 
     /**

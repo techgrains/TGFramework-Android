@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.techgrains.example.model.ApiResponse;
 import com.techgrains.example.model.CityList;
-import com.techgrains.example.model.CityListRequest;
+import com.techgrains.example.request.CityListRequest;
 import com.techgrains.example.model.UserData;
-import com.techgrains.example.model.UserDataRequest;
+import com.techgrains.example.request.UserDataRequest;
 import com.techgrains.service.TGIResponseListener;
 import com.techgrains.service.TGParams;
 import com.techgrains.service.TGRequest;
