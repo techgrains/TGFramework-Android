@@ -17,6 +17,7 @@ package com.techgrains.service;
 
 import android.util.Log;
 
+import com.android.volley.Request;
 import com.google.gson.reflect.TypeToken;
 import com.techgrains.service.model.ApiResponse;
 import com.techgrains.service.model.CityList;
@@ -146,11 +147,34 @@ public class TGRequestQueueTest  extends TestCase {
             TGIResponseListener<UserLoginResponseTest> listener = getTgiResponseListenerImpl();
 
             UserLoginRequestTest userLoginRequestTest = new UserLoginRequestTest(method, url, listener, params);
+            userLoginRequestTest.setPriority(TGRequestPriority.IMMEDIATE);
             requestQueue.addRequest(userLoginRequestTest);
             Thread.sleep(2000);
             assertNull(userLoginResponseTest);
             assertEquals(904, tgResponse.getError().getCode());
             assertTrue(tgResponse.getError().getMessage().startsWith("Unable to convert json response to object."));
+
+        } catch(Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    public void testTGRequestPriority() {
+        try {
+            int method = TGRequest.Method.POST;
+            String url = "mock/UserLoginResponseInvalid.json";
+            TGParams params = new TGParams();
+
+            TGIResponseListener<UserLoginResponseTest> listener = getTgiResponseListenerImpl();
+
+            UserLoginRequestTest userLoginRequestTest = new UserLoginRequestTest(method, url, listener, params);
+            assertEquals(Request.Priority.NORMAL, userLoginRequestTest.getPriority());
+            userLoginRequestTest.setPriority(TGRequestPriority.IMMEDIATE);
+            assertEquals(Request.Priority.IMMEDIATE, userLoginRequestTest.getPriority());
+            userLoginRequestTest.setPriority(TGRequestPriority.HIGH);
+            assertEquals(Request.Priority.HIGH, userLoginRequestTest.getPriority());
+            userLoginRequestTest.setPriority(TGRequestPriority.LOW);
+            assertEquals(Request.Priority.LOW, userLoginRequestTest.getPriority());
 
         } catch(Exception e) {
             fail(e.getMessage());

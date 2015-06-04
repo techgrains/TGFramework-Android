@@ -5,6 +5,7 @@ Change Log:
 - Enabled TGService as TGFramework's service layer wrapper
 - Volley based Request-Response structure (TGRequest, TGResponse etc.)
 - TGRequestQueue, TGJsonRequest and TGStringRequest wrapper implementation
+- Able to set priority to any type of TGRequest
 - Support for TDD with mock request creating through file based mock json response.
 - Custom object creation from JSON string using Gson library. (TGUtil)
 - Introduction of Exception and Error related classes (TGException, TGError)

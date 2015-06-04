@@ -49,6 +49,8 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
 
     private static String userAgent = null;
 
+    private TGRequestPriority priority;
+
     private TGParams params;
     TGIResponseListener<T> listener;
 
@@ -191,6 +193,36 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
         }
 
         return header;
+    }
+
+    @Override
+    /**
+     * Get the current priority of the request. (Low, Normal, High or Immediate)
+     */
+    final public Priority getPriority() {
+        if (priority==null)
+            return Priority.NORMAL;
+
+        switch(priority) {
+            case LOW:
+                return Priority.LOW;
+            case NORMAL:
+                return Priority.NORMAL;
+            case HIGH:
+                return Priority.HIGH;
+            case IMMEDIATE:
+                return Priority.IMMEDIATE;
+            default:
+                return Priority.NORMAL;
+        }
+    }
+
+    /**
+     * Set Request priority via TGRequestPriority
+     * @param priority TGRequestPriority
+     */
+    public void setPriority(TGRequestPriority priority) {
+        this.priority = priority;
     }
 
 }
