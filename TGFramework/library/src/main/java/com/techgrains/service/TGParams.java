@@ -54,4 +54,34 @@ public class TGParams extends TGObject {
     public void putParam(String key, String value) {
         params.put(key, value);
     }
+
+    /**
+     * Checks key-value pair is available in the params.
+     *
+     * @param key Non-null String to represent as key
+     * @return "true" if key is
+     */
+    public boolean hasKey(String key) {
+        return params.containsKey(key);
+    }
+
+    /**
+     * Fetches value from the params for the given key. It returns null if key is not available.
+     *
+     * @param key Non-null String to represent as key
+     * @return Object which paired with the key as value
+     */
+    public Object get(String key) {
+        return params.get(key);
+    }
+
+    /**
+     * Removes key-value pair from the params for the provided key.
+     *
+     * @param key Non-null String to represent as key
+     */
+    public void remove(String key) {
+        params.remove(key);
+    }
+
 }
