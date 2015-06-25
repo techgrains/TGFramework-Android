@@ -17,22 +17,18 @@ package com.techgrains.service;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
-import com.google.gson.reflect.TypeToken;
 import com.techgrains.application.TGApplication;
 import com.techgrains.error.TGError;
 import com.techgrains.error.TGException;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -89,14 +85,17 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
         this.params = params;
         this.type = type;
     }
-        /**
-         * Params of the TGRequest
-         *
-         * @return Map
-         * @throws AuthFailureError Auth Fails
-         */
+
+    /**
+     * Params of the TGRequest
+     *
+     * @return Map
+     * @throws AuthFailureError Auth Fails
+     */
     final protected Map<String, String> getParams() throws AuthFailureError {
-        return params.getParams();
+        if(params!=null)
+            return params.getParams();
+        return null;
     }
 
     /**
@@ -106,7 +105,7 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
      * @throws AuthFailureError Auth Fails
      */
     @Override
-    final public Map<String, String> getHeaders() throws AuthFailureError {
+    public Map<String, String> getHeaders() throws AuthFailureError {
         return getDefaultHeaders(null);
     }
 
