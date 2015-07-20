@@ -39,6 +39,14 @@ public class TGService extends TGObject {
     }
 
     /**
+     * Performs TGImageRequest which gives TGResponse based on the output.
+     * @param request TGImageRequest
+     */
+    public static void performImageRequest(TGImageRequest request) {
+        TGRequestQueue.getInstance().addImageRequest(request);
+    }
+
+    /**
      * Cancels the request to be performed. If request has been initiated on the network already, it will drop the response and ignores to update listeners.
      * @param request TGRequest
      */

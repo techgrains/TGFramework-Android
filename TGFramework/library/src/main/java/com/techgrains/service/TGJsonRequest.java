@@ -74,7 +74,8 @@ public abstract class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
             T jsonObject = (T)TGUtil.fromJson(response.getResponse(), getType());
             populateTGResponseCoreInfo(response, jsonObject);
 
-            listener.onSuccessBackgroundThread(jsonObject);
+            if(listener!=null)
+                listener.onSuccessBackgroundThread(jsonObject);
             return Response.success((T)jsonObject, HttpHeaderParser.parseCacheHeaders(networkResponse));
 
         } catch (JsonSyntaxException jse) {
@@ -87,7 +88,8 @@ public abstract class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
         } catch (Exception e) {
             response.setError(new TGException(e).getError());
         }
-        listener.onError(response);
+        if(listener!=null)
+            listener.onError(response);
         return Response.success(null, HttpHeaderParser.parseCacheHeaders(networkResponse));
     }
 

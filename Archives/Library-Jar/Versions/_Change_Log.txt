@@ -1,6 +1,9 @@
 Change Log:
 ===========
 
+:: 1.2
+- TGImageReqeust implementation to load images
+
 :: 1.1
 - Enabled TGService as TGFramework's service layer wrapper
 - Volley based Request-Response structure (TGRequest, TGResponse etc.)

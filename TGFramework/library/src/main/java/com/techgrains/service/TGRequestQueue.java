@@ -123,6 +123,14 @@ public class TGRequestQueue {
             fileRequestQueue.add(request);
     }
 
+    /**
+     * Adds provided TGRequest into the appropriate queue.
+     * @param request TGRequest
+     */
+    public void addImageRequest(TGImageRequest request) {
+        httpRequestQueue.add(request);
+    }
+
 }
 
 class FileStack implements HttpStack {

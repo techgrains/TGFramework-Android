@@ -55,7 +55,7 @@ task unitTest(type: Test) {
 android.libraryVariants.all { variant ->
     task("jar${variant.name}", type: Jar) {
         baseName = "TGFramework"
-        version = "1.0"
+        //version = "1.0"
         dependsOn variant.javaCompile
         from variant.javaCompile.destinationDir
         exclude '**/BuildConfig*', '**/R.class', '**/R$*.class', '**/R.html', '**/R.*.html', '**/*Test*.*', '**/R*.*'

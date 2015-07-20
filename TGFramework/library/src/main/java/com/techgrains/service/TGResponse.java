@@ -15,6 +15,8 @@
  */
 package com.techgrains.service;
 
+import android.graphics.Bitmap;
+
 import com.techgrains.common.TGObject;
 import com.techgrains.error.TGError;
 
@@ -27,6 +29,7 @@ public class TGResponse extends TGObject{
     private int statusCode;
     private Map<String, String> headers;
     private String response;
+    private Bitmap bitmap;
     private long networkTimeInMillis;
     private boolean modified;
     private TGError error;
@@ -45,6 +48,14 @@ public class TGResponse extends TGObject{
 
     public void setResponse(String response) {
         this.response = response;
+    }
+
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
     }
 
     public Map<String, String> getHeaders() {
