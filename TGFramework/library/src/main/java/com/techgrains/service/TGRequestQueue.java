@@ -16,6 +16,7 @@
 package com.techgrains.service;
 
 import android.webkit.URLUtil;
+import android.widget.ImageView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -50,10 +51,14 @@ public class TGRequestQueue {
 
     private static final String DEFAULT_CACHE_DIR = "TGRequestQueue";
     private static final int DEFAULT_NETWORK_THREAD_POOL_SIZE = 4;
-    private static final int MAX_DISK_CACHE_BYTES = -1;
+    private static final int DEFAULT_CACHE_SIZE = -1;
+    private static final int LRU_CACHE_SIZE = 5 * 1024 * 1024; // 5 MB
+    private static final int DISK_CACHE_SIZE = 20 * 1024 * 1024; // 20 MB
+    private static final int IMAGE_QUEUE_CACHE_SIZE = 20 * 1024 * 1024; // 20 MB
 
     private RequestQueue httpRequestQueue;
     private RequestQueue fileRequestQueue;
+    private RequestQueue imageRequestQueue;
 
     /**
      * Gives singleton instance of TGRequestQueue
@@ -67,27 +72,22 @@ public class TGRequestQueue {
     }
 
     private TGRequestQueue() {
-        fileRequestQueue = createFileRequestQueue();
-        httpRequestQueue = createHttpRequestQueue();
+        fileRequestQueue = createRequestQueue(DEFAULT_CACHE_SIZE);
+        httpRequestQueue = createRequestQueue(DISK_CACHE_SIZE);
+        imageRequestQueue = createRequestQueue(IMAGE_QUEUE_CACHE_SIZE);
     }
 
-    private static RequestQueue createHttpRequestQueue() {
-        RequestQueue queue = new RequestQueue(getDiskBasedCache(), new BasicNetwork(new HurlStack()), DEFAULT_NETWORK_THREAD_POOL_SIZE);
+    private static RequestQueue createRequestQueue(int size) {
+        RequestQueue queue = new RequestQueue(getDiskBasedCache(size), new BasicNetwork(new HurlStack()), DEFAULT_NETWORK_THREAD_POOL_SIZE);
         queue.start();
         return queue;
     }
 
-    private static RequestQueue createFileRequestQueue() {
-        RequestQueue queue = new RequestQueue(getDiskBasedCache(), new BasicNetwork(new FileStack()), DEFAULT_NETWORK_THREAD_POOL_SIZE);
-        queue.start();
-        return queue;
-    }
-
-    private static DiskBasedCache getDiskBasedCache() {
+    private static DiskBasedCache getDiskBasedCache(int cacheSize) {
         File cacheDir = new File(TGApplication.getContext().getCacheDir(), DEFAULT_CACHE_DIR);
-        return MAX_DISK_CACHE_BYTES<=-1
+        return cacheSize < 0
                 ? new DiskBasedCache(cacheDir)
-                : new DiskBasedCache(cacheDir, MAX_DISK_CACHE_BYTES);
+                : new DiskBasedCache(cacheDir, cacheSize);
     }
 
     /**
@@ -124,13 +124,25 @@ public class TGRequestQueue {
     }
 
     /**
-     * Adds provided TGRequest into the appropriate queue.
+     * Adds provided TGImageRequest into the particular image request queue.
      * @param request TGRequest
      */
     public void addImageRequest(TGImageRequest request) {
-        httpRequestQueue.add(request);
+        imageRequestQueue.add(request);
     }
 
+    /**
+     * Load Image with in memory LRU cache.
+     *
+     * @param imageUrl String
+     * @param imageView ImageView
+     * @param defaultImageId Resource Id for default image
+     * @param errorImageId Resource Id for error image
+     */
+    public void loadImage(String imageUrl, ImageView imageView, int defaultImageId, int errorImageId) {
+        TGImageLoader tgImageLoader = TGImageLoader.getInstance(imageRequestQueue, new LruBitmapCache(LRU_CACHE_SIZE));
+        tgImageLoader.loadImage(imageUrl, imageView, defaultImageId, errorImageId);
+    }
 }
 
 class FileStack implements HttpStack {

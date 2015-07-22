@@ -15,6 +15,8 @@
  */
 package com.techgrains.service;
 
+import android.widget.ImageView;
+
 import com.techgrains.common.TGObject;
 
 /**
@@ -24,6 +26,7 @@ public class TGService extends TGObject {
 
     /**
      * Performs TGJsonRequest which gives TGResponse based on the JSon output.
+     *
      * @param request TGJsonRequest
      */
     public static void performJsonRequest(TGJsonRequest<?> request) {
@@ -32,6 +35,7 @@ public class TGService extends TGObject {
 
     /**
      * Performs TGStringRequest which gives TGResponse based on the output.
+     *
      * @param request TGStringRequest
      */
     public static void performStringRequest(TGStringRequest<?> request) {
@@ -40,6 +44,7 @@ public class TGService extends TGObject {
 
     /**
      * Performs TGImageRequest which gives TGResponse based on the output.
+     *
      * @param request TGImageRequest
      */
     public static void performImageRequest(TGImageRequest request) {
@@ -48,6 +53,7 @@ public class TGService extends TGObject {
 
     /**
      * Cancels the request to be performed. If request has been initiated on the network already, it will drop the response and ignores to update listeners.
+     *
      * @param request TGRequest
      */
     public static void cancelRequest(TGRequest request) {
@@ -56,6 +62,7 @@ public class TGService extends TGObject {
 
     /**
      * Cancel requests by tag.
+     *
      * @param tag Object
      */
     public static void cancelRequestByTag(Object tag) {
@@ -76,4 +83,25 @@ public class TGService extends TGObject {
         TGRequestQueue.getInstance().stopRequests();
     }
 
+    /**
+     * Load Image with in memory LRU cache.
+     *
+     * @param imageUrl String
+     * @param imageView ImageView
+     */
+    public void loadImage(String imageUrl, ImageView imageView) {
+        TGRequestQueue.getInstance().loadImage(imageUrl, imageView, 0, 0);
+    }
+
+    /**
+     * Load Image with in memory LRU cache.
+     *
+     * @param imageUrl String
+     * @param imageView ImageView
+     * @param defaultImageId Resource Id for default image
+     * @param errorImageId Resource Id for error image
+     */
+    public void loadImage(String imageUrl, ImageView imageView, int defaultImageId, int errorImageId) {
+        TGRequestQueue.getInstance().loadImage(imageUrl, imageView, defaultImageId, errorImageId);
+    }
 }
