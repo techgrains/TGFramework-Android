@@ -109,16 +109,62 @@ showToast("Email has been sent!");       // For short lived toast message
 showToast("Email has been sent!",false); // For long lived toast message
 ```
 
+### TGRequest & TGResponse
+TGFramework gives mechanism to use HTTP Request & Response like an ORM which facilitates various response conversion inbuilt. (Like, JSon response to object or Image response to Bitmap). Internally it uses Google’s Volley framework.
+
+#### TGStringRequest
+Provides http response as is as String along with other params in TGResponse. (Like Status Code, Headers, Response, Headers, Network Time etc.)
+It uses TGIResponseListener for callback methods.
+
+#### TGJsonRequest
+Encapsulates network calls and conversion of json response to custom T (provided) object. It internally uses GSon library for converting string into Java objects. It supports SerializedName expression to map Json element name to java object's attribute name. It uses TGIResponseListener for callback methods.
+
+Reference from Example app
+```
+public class CityListRequest extends TGJsonRequest<ApiResponse<CityList>>
+``` 
+
+#### TGImageRequest
+Uses separate request queue to avoid network call sharing with TGJsonRequest and TGStringRequest. Response of the image is provided as common TGResponse object having attribute name “bitmap”. It uses same TGIResponseListener for callback methods.
+```
+public class HomeBackgroundImageRequest<T extends TGResponse> extends TGImageRequest
+``` 
+
+#### TGImageLoader (Alternate of TGImageRequest)
+Uses ImageLoader with Lru Cache to give option to keep images in memory. Recommended approach when it requires to keep images in memory. (Like, scrollable list of results, list of image views as slides)
+```
+TGService.loadImage(IMAGE_URL, imageView);
+TGService.loadImage(IMAGE_URL, imageView. R.drawable.default_image, R.drawable.error_image);
+```
+
+#### TGIResponseListener
+Callback methods either on Main thread or on Background thread upon successful/error response.
+```
+void onSuccessMainThread(T response);
+void onSuccessBackgroundThread(T response);
+void onError(TGResponse response);
+```
+
+### TGService
+Service wrapper class to facilitate all the service/network related calls including String request, Json request, Image request and image loader.
+```
+public static void performJsonRequest (TGJsonRequest<?> request)
+public static void performStringRequest (TGStringRequest<?> request)
+public static void performImageRequest (TGImageRequest request)
+public static void cancelRequest (TGRequest request)
+public static void cancelRequestByTag (Object tag)
+public static void startRequests()
+public static void stopRequests()
+public static void loadImage (String imageUrl, ImageView imageView)
+public static void loadImage (String imageUrl, ImageView imageView, int defaultImageId, int errorImageId)
+```
+
+### TGError & TGException
+Entire TGFrameworks handles and throws exception in common TGException. Also uses TGError object to transfer error information across the board. Every TGException holds TGError object as exception code and message.
+
 ### Example App
 Code base already has example "app" in parallel to library, which shows how to use all TG components.
 @TGFramework > app (folder)
-
-### Upcoming...
-- TGModel : Application data models which can bridge service output to UI elements.
-- TGService : Common gateway to call outer services
-- TGRequest : Http Service Request creation
-- TGResponse : Http Service Response creation
-- TGError & TGException : Error handling & Exception handling
 
 ### Anything to say?
 Any suggestions or recommendations are most welcome.

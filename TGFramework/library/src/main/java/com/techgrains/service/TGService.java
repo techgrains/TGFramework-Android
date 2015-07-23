@@ -89,7 +89,7 @@ public class TGService extends TGObject {
      * @param imageUrl String
      * @param imageView ImageView
      */
-    public void loadImage(String imageUrl, ImageView imageView) {
+    public static void loadImage(String imageUrl, ImageView imageView) {
         TGRequestQueue.getInstance().loadImage(imageUrl, imageView, 0, 0);
     }
 
@@ -101,7 +101,7 @@ public class TGService extends TGObject {
      * @param defaultImageId Resource Id for default image
      * @param errorImageId Resource Id for error image
      */
-    public void loadImage(String imageUrl, ImageView imageView, int defaultImageId, int errorImageId) {
+    public static void loadImage(String imageUrl, ImageView imageView, int defaultImageId, int errorImageId) {
         TGRequestQueue.getInstance().loadImage(imageUrl, imageView, defaultImageId, errorImageId);
     }
 }

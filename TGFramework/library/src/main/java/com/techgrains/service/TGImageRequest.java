@@ -25,6 +25,9 @@ import com.android.volley.toolbox.ImageRequest;
 import com.techgrains.error.TGError;
 import com.techgrains.error.TGException;
 
+/**
+ * TGImageRequest has been created by extending TGRequest which internally uses Volley framework. It fetches image provide back as Bitmap.
+ */
 public class TGImageRequest extends ImageRequest {
 
     private TGResponse response;

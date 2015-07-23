@@ -2,7 +2,9 @@ Change Log:
 ===========
 
 :: 1.2
-- TGImageReqeust implementation to load images
+- TGImageReqeust implementation to load images.
+- TGImageLoader to load and keep images in memory with Lru Cache.
+- TGService wrapper class to include all service/network related calls.
 
 :: 1.1
 - Enabled TGService as TGFramework's service layer wrapper
