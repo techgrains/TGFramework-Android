@@ -72,13 +72,13 @@ public class TGRequestQueue {
     }
 
     private TGRequestQueue() {
-        fileRequestQueue = createRequestQueue(DEFAULT_CACHE_SIZE);
-        httpRequestQueue = createRequestQueue(DISK_CACHE_SIZE);
-        imageRequestQueue = createRequestQueue(IMAGE_QUEUE_CACHE_SIZE);
+        fileRequestQueue = createRequestQueue(new FileStack(), DEFAULT_CACHE_SIZE);
+        httpRequestQueue = createRequestQueue(new HurlStack(), DISK_CACHE_SIZE);
+        imageRequestQueue = createRequestQueue(new HurlStack(), IMAGE_QUEUE_CACHE_SIZE);
     }
 
-    private static RequestQueue createRequestQueue(int size) {
-        RequestQueue queue = new RequestQueue(getDiskBasedCache(size), new BasicNetwork(new HurlStack()), DEFAULT_NETWORK_THREAD_POOL_SIZE);
+    private static RequestQueue createRequestQueue(HttpStack stack, int size) {
+        RequestQueue queue = new RequestQueue(getDiskBasedCache(size), new BasicNetwork(stack), DEFAULT_NETWORK_THREAD_POOL_SIZE);
         queue.start();
         return queue;
     }
