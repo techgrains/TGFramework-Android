@@ -16,13 +16,18 @@
 package com.techgrains.util;
 
 import android.content.Context;
-import android.content.res.AssetManager;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.provider.Settings;
 
 import com.techgrains.application.TGApplication;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 /**
@@ -30,6 +35,8 @@ import java.io.IOException;
  * (i.e., Network Availability relies on Android's Application Context via ConnectivityManager.
  */
 public class TGAndroidUtil {
+
+    private static final String LOG_TAG ="TGF";
 
     /**
      * Checks Internet connectivity, returns true is network is available else false
@@ -54,4 +61,116 @@ public class TGAndroidUtil {
         return TGUtil.readInputStream(TGApplication.getContext().getResources().getAssets().open(file));
     }
 
+    /**
+     * Gets Display Metric based on the device.
+     * @return int Density DPI from DisplayMetric
+     */
+    public static int getDisplayMetric() {
+        return TGApplication.getContext().getResources().getDisplayMetrics().densityDpi;
+    }
+
+    /**
+     * Logs provided logText with "TGF" tag and android.util.Log.DEBUG log level
+     * @param logText String
+     */
+    public static void log(String logText) {
+        log(Log.DEBUG, LOG_TAG, logText);
+    }
+
+    /**
+     * Logs provided logText in provided tag with android.util.Log.DEBUG log level
+     * @param tag String
+     * @param logText String
+     */
+    public static void log(String tag, String logText) {
+        log(Log.DEBUG, tag, logText);
+    }
+
+    /**
+     * Logs provided logText with "TGF" tag with  given logLevel (like, android.util.Log.DEBUG)
+     * @param logLevel int VERBOSE, DEBUG, INFO, WARN, ERROR
+     * @param logText String
+     */
+    public static void log(int logLevel, String logText) {
+        log(logLevel, LOG_TAG, logText);
+    }
+
+    /**
+     * Logs provided logText in provided tag at given logLevel (like, android.util.Log.DEBUG)
+     * @param logLevel int VERBOSE, DEBUG, INFO, WARN, ERROR
+     * @param tag String
+     * @param logText String
+     */
+    public static void log(int logLevel, String tag, String logText) {
+        switch(logLevel) {
+            case Log.VERBOSE:
+                Log.v(tag, logText);
+                break;
+
+            case Log.DEBUG:
+                Log.d(tag, logText);
+                break;
+
+            case Log.INFO:
+                Log.i(tag, logText);
+                break;
+
+            case Log.WARN:
+                Log.w(tag, logText);
+                break;
+
+            case Log.ERROR:
+                Log.e(tag, logText);
+                break;
+        }
+    }
+
+    /**
+     * Converts Bitmap into Byte array using PNG compress format.
+     * @param bitmap Bitmap
+     * @return byte[]
+     */
+    public static byte[] convertBitmapToByte(Bitmap bitmap) {
+        if (bitmap != null) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0, stream);
+            return stream.toByteArray();
+        }
+        return null;
+    }
+
+    /**
+     * Converts Byte array into Bitmap
+     * @param bytes byte[]
+     * @return Bitmap
+     */
+    public static Bitmap convertByteArrayToBitmap(byte[] bytes) {
+        if (bytes != null) {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+        }
+        return null;
+    }
+
+    /**
+     * Get IMEI code
+     * @return String IMEI
+     */
+    public static String getIMEI() {
+        TelephonyManager telephonyManager = (TelephonyManager) TGApplication.getContext().getSystemService(Context.TELEPHONY_SERVICE);
+        String deviceId = telephonyManager.getDeviceId();
+        if (TGUtil.hasValue(deviceId))
+            return deviceId;
+        return Settings.Secure.getString(TGApplication.getContext().getContentResolver(),Settings.Secure.ANDROID_ID);
+    }
+
+    /**
+     * Check current device is tablet or not!
+     * @return boolean
+     */
+    public static boolean isTablet() {
+        return (TGApplication.getContext().getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
 }

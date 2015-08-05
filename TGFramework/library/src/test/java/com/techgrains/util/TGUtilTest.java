@@ -58,6 +58,7 @@ public class TGUtilTest {
     @Test
     public void formatDate() {
         assertEquals("03/16/05", TGUtil.formatDate(date, "MM/dd/yy"));
+        assertTrue(TGUtil.formatDate(date).startsWith("2005-03-16"));
     }
 
     @Test

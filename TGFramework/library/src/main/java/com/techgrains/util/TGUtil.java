@@ -34,11 +34,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
+import java.util.UUID;
 
 /**
  * Utility class for TGFramework library, which includes date parsing and formatting.
  */
 public class TGUtil extends TGObject {
+
+    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
+    private static final String DATE_PATTERN = "yyyy-MM-dd";
+    private static final String TIME_PATTERN = "HH:mm:ss";
 
     /**
      * Parse Date by provided pattern along with target Time Zone.
@@ -64,7 +69,6 @@ public class TGUtil extends TGObject {
     /**
      * Format Date by provided pattern along with target Time Zone
      * Pattern Reference: http://developer.android.com/reference/java/text/SimpleDateFormat.html
-     *
      * @param date Date
      * @param pattern String
      * @param targetTimeZone TimeZone
@@ -77,8 +81,48 @@ public class TGUtil extends TGObject {
         return simpleDateFormat.format(date);
     }
 
+    /**
+     * Format Date by provided pattern
+     * Pattern Reference: http://developer.android.com/reference/java/text/SimpleDateFormat.html
+     * @param date Date
+     * @param pattern String
+     * @return String - formatted string
+     */
     public static String formatDate(Date date, String pattern) {
         return formatDate(date, pattern, null);
+    }
+
+    /**
+     * Format Date with default "yyyy-MM-dd'T'HH:mm:ss" pattern
+     * @param date Date
+     * @return String - formatted string
+     */
+    public static String formatDate(Date date) {
+        return formatDate(date, DATE_TIME_PATTERN, null);
+    }
+
+    /**
+     * Current date and time in format of "yyyy-MM-dd'T'HH:mm:ss"
+     * @return String
+     */
+    public static String currentDateTime() {
+        return formatDate(new Date(), DATE_TIME_PATTERN, null);
+    }
+
+    /**
+     * Current date in format of "yyyy-MM-dd"
+     * @return String
+     */
+    public static String currentDate() {
+        return formatDate(new Date(), DATE_PATTERN, null);
+    }
+
+    /**
+     * Current time in format of "HH:mm:ss"
+     * @return String
+     */
+    public static String currentTime() {
+        return formatDate(new Date(), TIME_PATTERN, null);
     }
 
     /**
@@ -108,7 +152,6 @@ public class TGUtil extends TGObject {
         String line = null;
         while ((line = br.readLine()) != null) {
             sb.append(line);
-//            sb.append("\n");
         }
         return sb.toString();
     }
@@ -133,6 +176,14 @@ public class TGUtil extends TGObject {
      */
     public static String readInputStream(InputStream inputStream) throws IOException {
         return readReader(new InputStreamReader(inputStream));
+    }
+
+    /**
+     * Generates random UUID.
+     * @return String
+     */
+    public static String getRandomUUID() {
+        return UUID.randomUUID().toString();
     }
 
 }
