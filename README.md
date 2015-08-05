@@ -159,6 +159,60 @@ public static void loadImage (String imageUrl, ImageView imageView)
 public static void loadImage (String imageUrl, ImageView imageView, int defaultImageId, int errorImageId)
 ```
 
+### TGUtil
+Utility methods which are independent of any Android specific API.
+```
+// Parse Date from String
+Date date = TGUtil.parseDate("2005-03-16 7:30:45", "yyyy-MM-dd HH:mm:ss");
+Date date = TGUtil.parseDate("2005-03-16 7:30:45", "yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("EST"));
+
+// Format Date into String
+String dateString = TGUtil.formatDate(date, "yyyy-MM-dd HH:mm:ss.SSSZ");
+String dateString = TGUtil.formatDate(date, "yyyy-MM-dd HH:mm:ss.SSSZ", TimeZone.getTimeZone("GMT"));
+
+// Current Date and/or Time in String format
+String currentDateTime = TGUtil.currentDateTime(); // In format of "yyyy-MM-dd'T'HH:mm:ss"
+String currentDate = TGUtil.currentDate(); // In format of "yyyy-MM-dd"
+String currentTime = TGUtil.currentTime(); // In format of "HH:mm:ss"
+
+// Convert JSon string into Object
+Employee employee = (Employee) TGUtil.fromJson(jsonString, new TypeToken<Employee>(){}.getType());
+
+// Read File
+String fileString = TGUtil.readFile(String filename);
+
+// Random UUID
+String uuid = TGUtil.getRandomUUID();
+```
+
+### TGAndroidUtil
+Utility methods which are depending upon Android API.
+```
+// Check Internet network available
+boolean isNetworkAvailable = TGAndroidUtil.isNetworkAvailable();
+
+// Read file from asset
+String fileString = TGAndroidUtil.readFileFromAssets(String file);
+
+// Gets display metric to decide scheme : sdpi, mdpi, hdpi, xhdpi, xxhdpi, xxxhdpi
+int scheme = TGAndroidUtil.getDisplayMetric();
+
+// Android logs : Supports VERBOSE, DEBUG, INFO, WARN, ERROR
+TGAndroidUtil.log("Started Main Activity"); // Defaults to Log.DEBUG, Tag is "TGFramework"
+TGAndroidUtil.log(Log.ERROR, "Failed to start Main Activity");
+TGAndroidUtil.log(Log.INFO, "My Own Log Tag", "Something in Main Activity");
+
+// Conversion between Bitmap to-from Byte array
+byte[] bytes = TGAndroidUtil.convertBitmapToByte(bitmap);
+Bitmap bitmap = TGAndroidUtil.convertByteArrayToBitmap(bytes);
+
+// IMEI Code
+String imei = TGAndroidUtil.getIMEI();
+
+// Check for tablet
+boolean isTablet = TGAndroidUtil.isTablet();
+```
+
 ### TGError & TGException
 Entire TGFrameworks handles and throws exception in common TGException. Also uses TGError object to transfer error information across the board. Every TGException holds TGError object as exception code and message.
 

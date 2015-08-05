@@ -5,6 +5,8 @@ Change Log:
 - TGImageReqeust implementation to load images.
 - TGImageLoader to load and keep images in memory with Lru Cache.
 - TGService wrapper class to include all service/network related calls.
+- TGAndroidUtil provides common logging mechanism, Bitmap to/from byte[] conversion, IMEI code
+- TGUtil formats current date and time with default patterns for handy use
 
 :: 1.1
 - Enabled TGService as TGFramework's service layer wrapper
