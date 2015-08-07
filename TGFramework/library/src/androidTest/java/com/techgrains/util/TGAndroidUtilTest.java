@@ -19,6 +19,8 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.List;
 
 public class TGAndroidUtilTest extends TestCase {
 
@@ -49,4 +51,49 @@ public class TGAndroidUtilTest extends TestCase {
         assertTrue(TGUtil.hasValue(content));
     }
 
+    public void testSerializeDeserializeString() {
+        try {
+            String serialized = TGAndroidUtil.serialize("Vishal Patel");
+            //assertEquals("test", serialized);
+            String deserialized = (String) TGAndroidUtil.deserialize(serialized);
+            assertEquals("Vishal Patel", deserialized);
+        } catch (Exception e) {
+            e.printStackTrace();
+            fail("Exception must not occur.");
+        }
+    }
+
+    public void testSerializeDeserializeObject() {
+        Employee employee = new Employee("Vishal", 35, 50000);
+        try {
+            String serialized = TGAndroidUtil.serialize(employee);
+            Employee deserialized = (Employee) TGAndroidUtil.deserialize(serialized);
+            assertNotNull(deserialized);
+            assertEquals(employee.name, deserialized.name);
+            assertEquals(employee.age, deserialized.age);
+            assertTrue(employee.salary == deserialized.salary);
+        } catch (Exception e) {
+            fail("Exception must not occur.");
+        }
+    }
 }
+
+class Employee implements Serializable {
+    String name;
+    int age;
+    float salary;
+    List<Department> departments;
+
+    public Employee() {}
+    public Employee(String name, int age, float salary) {
+        this.name=name;
+        this.age=age;
+        this.salary=salary;
+    }
+}
+
+class Department {
+    int id;
+    String name;
+}
+

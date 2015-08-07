@@ -56,16 +56,6 @@ Just make any class as Session listener by implementing TGSessionListener. And g
 ##### Where NOT to use TGSession:
 TGSession holds data in app memory (RAM) so whenever it required data to be stored beyond user's app usage. Please consider to store it in local database or shared preference. One can reload in TGSession again when app starts again.
 
-### TGUtil
-Utility class for TG library. Gives utility to parse and format date including Time Zone effects.
-
-```
-Date parsedDate = TGUtil.parseDate("2005-03-16 7:30:45", "yyyy-MM-dd HH:mm:ss");
-Date date = TGUtil.parseDate("2005-03-16 7:30:45", "yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("EST"));
-
-String formattedDate = TGUtil.formatDate(date, "MM/dd/yy")
-```
-
 ### TGApplication
 Application class which holds light weight Application Context reference. Android framework manages Application as Singleton Instance internally. Just set this class or your own Application class which extends TGApplication.
 
@@ -167,7 +157,7 @@ Date date = TGUtil.parseDate("2005-03-16 7:30:45", "yyyy-MM-dd HH:mm:ss");
 Date date = TGUtil.parseDate("2005-03-16 7:30:45", "yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("EST"));
 
 // Format Date into String
-String dateString = TGUtil.formatDate(date, "yyyy-MM-dd HH:mm:ss.SSSZ");
+String dateString = TGUtil.formatDate(date, "yyyy-MM-dd");
 String dateString = TGUtil.formatDate(date, "yyyy-MM-dd HH:mm:ss.SSSZ", TimeZone.getTimeZone("GMT"));
 
 // Current Date and/or Time in String format
@@ -194,6 +184,10 @@ boolean isNetworkAvailable = TGAndroidUtil.isNetworkAvailable();
 // Read file from asset
 String fileString = TGAndroidUtil.readFileFromAssets(String file);
 
+// Serialize & Deserialize any object to & from String
+String serialized = TGAndroidUtil.serialize(new Employee("Vishal","Developer"));
+Employee deserialized = (Employee) TGAndroidUtil.deserialize(serialized);
+
 // Gets display metric to decide scheme : sdpi, mdpi, hdpi, xhdpi, xxhdpi, xxxhdpi
 int scheme = TGAndroidUtil.getDisplayMetric();
 
@@ -211,6 +205,18 @@ String imei = TGAndroidUtil.getIMEI();
 
 // Check for tablet
 boolean isTablet = TGAndroidUtil.isTablet();
+```
+
+### TGSharedPreferences
+Wrapper class of android.content.SharedPreferences interface.
+```
+TGSharedPreferences.editor().putString("username","Vishal");
+String username = TGSharedPreferences.instance().getString("username");
+```
+Extended Shared Preference to accomodate to put Object into the shared preference and get it back as is.
+```
+TGSharedPreferences.putObject("employee",new User("Vishal"));
+User user = TGSharedPreferences.getObject("username");
 ```
 
 ### TGError & TGException

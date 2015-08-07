@@ -22,13 +22,18 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.telephony.TelephonyManager;
+import android.util.Base64InputStream;
+import android.util.Base64OutputStream;
 import android.util.Log;
 import android.provider.Settings;
 
 import com.techgrains.application.TGApplication;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 /**
  * TGAndroidUtil is differnet than TGUtil in terms of Android classes depedencies.
@@ -161,7 +166,7 @@ public class TGAndroidUtil {
         String deviceId = telephonyManager.getDeviceId();
         if (TGUtil.hasValue(deviceId))
             return deviceId;
-        return Settings.Secure.getString(TGApplication.getContext().getContentResolver(),Settings.Secure.ANDROID_ID);
+        return Settings.Secure.getString(TGApplication.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
     /**
@@ -173,4 +178,35 @@ public class TGAndroidUtil {
                 & Configuration.SCREENLAYOUT_SIZE_MASK)
                 >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
+
+    /**
+     * Serialize any object into String
+     * @param object Object
+     * @return String
+     * @throws IOException If unable to access Stream
+     */
+    public static String serialize(Object object) throws java.io.IOException {
+        if(object == null)
+            return null;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(new Base64OutputStream(byteArrayOutputStream, 0));
+        objectOutputStream.writeObject(object);
+        objectOutputStream.flush();
+        objectOutputStream.close();
+        return byteArrayOutputStream.toString();
+    }
+
+    /**
+     * Deserialize provided string into Object
+     * @param serialized String
+     * @return Object
+     * @throws IOException If unable to access Stream
+     * @throws ClassNotFoundException If unable to find class
+     */
+    public static Object deserialize(String serialized) throws IOException, ClassNotFoundException {
+        if(serialized == null)
+            return null;
+        return new ObjectInputStream(new Base64InputStream(new ByteArrayInputStream(serialized.getBytes()), 0)).readObject();
+    }
+
 }
