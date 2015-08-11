@@ -17,6 +17,7 @@ package com.techgrains.util;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import com.techgrains.common.TGObject;
 
 import java.io.BufferedReader;
@@ -29,6 +30,8 @@ import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -136,6 +139,26 @@ public class TGUtil extends TGObject {
     }
 
     /**
+     * String created by provided Object.
+     *
+     * @param obj Object
+     * @return String JSon
+     */
+    public static String toJson(Object obj) {
+        return new Gson().toJson(obj);
+    }
+
+    /**
+     * Convert an object into HashMap.
+     *
+     * @param obj Object
+     * @return Map
+     */
+    public static Map<String, Object> convertToMap(Object obj) {
+        return new Gson().fromJson(new Gson().toJson(obj), new TypeToken<HashMap<String, Object>>() {}.getType());
+    }
+
+    /**
      * Read the reader and gives content as String
      *
      * @param reader Reader
@@ -182,4 +205,15 @@ public class TGUtil extends TGObject {
         return UUID.randomUUID().toString();
     }
 
+    /**
+     * Trims params from URL.
+     * @param url String
+     * @return String URL without trailing params
+     */
+    public static String trimParamsFromUrl(String url) {
+        int qIndex = url.indexOf("?");
+        if(qIndex>=0)
+            return url.substring(0, qIndex);
+        return url;
+    }
 }

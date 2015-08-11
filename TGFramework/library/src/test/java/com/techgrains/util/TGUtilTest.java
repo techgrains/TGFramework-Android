@@ -21,8 +21,11 @@ import com.google.gson.reflect.TypeToken;
 import org.junit.*;
 
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import static org.junit.Assert.*;
@@ -86,6 +89,38 @@ public class TGUtilTest {
         }
     }
 
+    @Test
+    public void toJson() {
+        Employee employee = new Employee("Vishal", 35, 12345.67f, Arrays.asList(new Department(1, "HR")));
+        String json = TGUtil.toJson(employee);
+        assertEquals("{\"name\":\"Vishal\",\"age\":35,\"salary\":12345.67,\"departments\":[{\"id\":1,\"name\":\"HR\"}]}", json);
+    }
+
+    @Test
+    public void convertToMap() {
+        Employee employee = new Employee("Vishal", 35, 12345.67f, Arrays.asList(new Department(1, "HR")));
+        Map<String, Object> map = TGUtil.convertToMap(employee);
+        assertEquals(4, map.size());
+        assertEquals("Vishal", map.get("name"));
+        assertEquals(35.0, map.get("age"));
+        assertEquals(12345.67, map.get("salary"));
+        assertEquals("[{id=1.0, name=HR}]", map.get("departments").toString());
+    }
+
+    @Test
+    public void trimParamsFromUrl() {
+        String trimUrl;
+        String expectedUrl = "http://www.techgrains.com/user/search";
+        trimUrl = TGUtil.trimParamsFromUrl("http://www.techgrains.com/user/search");
+        assertEquals(expectedUrl, trimUrl);
+        trimUrl = TGUtil.trimParamsFromUrl("http://www.techgrains.com/user/search?");
+        assertEquals(expectedUrl, trimUrl);
+        trimUrl = TGUtil.trimParamsFromUrl("http://www.techgrains.com/user/search?location=India");
+        assertEquals(expectedUrl, trimUrl);
+        trimUrl = TGUtil.trimParamsFromUrl("http://www.techgrains.com/user/search?location=India&sortBy=name");
+        assertEquals(expectedUrl, trimUrl);
+    }
+
     private String employeeJson() {
         return "{name:vishal, age:35, salary:54376.43, departments:[{id:1,name:hr},{id:2,name:it}]}";
     }
@@ -96,9 +131,25 @@ class Employee {
     int age;
     float salary;
     List<Department> departments;
+
+    public Employee() {}
+
+    public Employee(String name, int age, float salary, List<Department> departments) {
+        this.name = name;
+        this.age = age;
+        this.salary = salary;
+        this.departments = departments;
+    }
 }
 
 class Department {
     int id;
     String name;
+
+    public Department() {}
+
+    public Department(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

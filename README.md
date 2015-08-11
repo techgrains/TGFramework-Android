@@ -168,6 +168,11 @@ String currentTime = TGUtil.currentTime(); // In format of "HH:mm:ss"
 // Convert JSon string into Object
 Employee employee = (Employee) TGUtil.fromJson(jsonString, new TypeToken<Employee>(){}.getType());
 
+// Convert Object into JSon string or even Map object of key value pair by attributes
+Employee employee = new Employee(1, "Matt");
+Sting employeeString = TGUtil.toJson(employee); // JSon representation of Employee object
+Map<String, Object> employeeMap = TGUtil.convertToMap(employee); // Key-Value pair of each attribute of employee object
+
 // Read File
 String fileString = TGUtil.readFile(String filename);
 
@@ -219,6 +224,36 @@ TGSharedPreferences.putObject("employee",new User("Vishal"));
 User user = TGSharedPreferences.getObject("username");
 ```
 
+### TGLocationManager
+Custom location manager class which uses android.location.LocationManager to capture current location with accuracy and timeout settings.
+```
+TGLocationListener listener = new TGLocationListener() {
+    @Override
+    public void onAccurateLocation(Location location) {...}
+
+    @Override
+    public void onStart() {...}
+    
+    @Override
+    public void onTimeOut() {...}
+
+    @Override
+    public void onLocationChanged(Location location) {...}
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {...}
+
+    @Override
+    public void onProviderEnabled(String provider) {...}
+
+    @Override
+    public void onProviderDisabled(String provider) {...}
+};
+
+float targetAccuracy = 5.0f;
+int timeout = 60000; // 60 secs
+TGLocationManager tgLocationManager = new TGLocationManager(listener, targetAccuracy, timeout);
+```
 ### TGError & TGException
 Entire TGFrameworks handles and throws exception in common TGException. Also uses TGError object to transfer error information across the board. Every TGException holds TGError object as exception code and message.
 

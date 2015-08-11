@@ -8,6 +8,7 @@ Change Log:
 - TGAndroidUtil provides common logging mechanism, Bitmap to/from byte[] conversion, IMEI code
 - TGUtil formats current date and time with default patterns for handy use
 - TGSharedPreference wraps the need upon Shared Preference with default and custom implementation
+- Introduce TGLocationManager to capture current location based on certain accuracy and timeout settings
 
 :: 1.1
 - Enabled TGService as TGFramework's service layer wrapper

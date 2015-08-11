@@ -23,14 +23,14 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:support-annotations:20.0.0'
+    compile 'com.android.support:support-annotations:21.+'
     compile 'com.mcxiaoke.volley:library:1.+'
     compile 'com.google.code.gson:gson:2.+'
 
     testCompile 'junit:junit:4.12'
     testCompile 'com.google.android:android-test:4.1.1.4'
 
-    testCompile 'com.android.support:support-annotations:20.0.0'
+    testCompile 'com.android.support:support-annotations:21.+'
     testCompile 'com.mcxiaoke.volley:library:1.+'
     testCompile 'com.google.code.gson:gson:2.+'
 }
