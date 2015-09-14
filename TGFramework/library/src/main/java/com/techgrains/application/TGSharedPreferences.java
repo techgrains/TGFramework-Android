@@ -85,8 +85,8 @@ public class TGSharedPreferences {
      * @throws IOException If unable to access Stream
      * @throws ClassNotFoundException If unable to find class
      */
-    public static void getObject(String key) throws IOException, ClassNotFoundException {
-        getObject(key, instance());
+    public static Object getObject(String key) throws IOException, ClassNotFoundException {
+        return getObject(key, instance());
     }
 
     /**
@@ -97,8 +97,8 @@ public class TGSharedPreferences {
      * @throws IOException If unable to access Stream
      * @throws ClassNotFoundException If unable to find class
      */
-    public static void getObject(String key, String name, int mode) throws IOException, ClassNotFoundException {
-        getObject(key, instance(name, mode));
+    public static Object getObject(String key, String name, int mode) throws IOException, ClassNotFoundException {
+        return getObject(key, instance(name, mode));
     }
 
     private static Object getObject(String key, SharedPreferences sharedPreferences) throws IOException, ClassNotFoundException {

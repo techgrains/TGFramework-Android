@@ -16,6 +16,7 @@
 package com.techgrains.service;
 
 import com.techgrains.common.TGObject;
+import com.techgrains.util.TGUtil;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -43,6 +44,34 @@ public class TGParams extends TGObject {
     public void setParams(Map<String, String> params) {
         if(params==null) this.params.clear();
         else this.params = params;
+    }
+
+    /**
+     * Sets Map of Params from Object to String
+     * @param params Map
+     */
+    public void setParamsFromObjectToString(Map<String, Object> params) {
+        this.params.clear();
+        if(params!=null) {
+            for (String key:params.keySet()) {
+                if(params.get(key)!=null)
+                    this.params.put(key, params.get(key).toString());
+            }
+        }
+    }
+
+    /**
+     * Sets Map of Params from Object to String
+     * @param params Map
+     */
+    public void setParamsFromObjectToJson(Map<String, Object> params) {
+        this.params.clear();
+        if(params!=null) {
+            for (String key:params.keySet()) {
+                if(params.get(key)!=null)
+                    this.params.put(key, TGUtil.toJson(params.get(key)));
+            }
+        }
     }
 
     /**

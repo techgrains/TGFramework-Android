@@ -16,6 +16,15 @@
 package com.techgrains.util;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.techgrains.common.TGObject;
@@ -155,7 +164,14 @@ public class TGUtil extends TGObject {
      * @return Map
      */
     public static Map<String, Object> convertToMap(Object obj) {
-        return new Gson().fromJson(new Gson().toJson(obj), new TypeToken<HashMap<String, Object>>() {}.getType());
+//        return (Map<String, Object>)new Gson().fromJson(new Gson().toJson(obj), new TypeToken<HashMap<String, Object>>() {}.getType());
+//        String json = new Gson().toJson(obj);
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(new TypeToken<Object>() {}.getType(), new IntegerDeserializer())
+                .create();
+
+        return (Map<String, Object>)gson.fromJson(new Gson().toJson(obj), new TypeToken<HashMap<String, Object>>() {}.getType());
     }
 
     /**
@@ -215,5 +231,20 @@ public class TGUtil extends TGObject {
         if(qIndex>=0)
             return url.substring(0, qIndex);
         return url;
+    }
+
+    private static class IntegerDeserializer implements JsonDeserializer<Object>
+    {
+        @Override
+        public Object deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext ctx) throws JsonParseException
+        {
+            if(true) new String("123");
+            if(!json.isJsonNull()) {
+                if (json.isJsonPrimitive()) {
+                    return new Integer(10);
+                }
+            }
+            return json;
+        }
     }
 }
