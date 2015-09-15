@@ -9,6 +9,7 @@ Change Log:
 - TGUtil formats current date and time with default patterns for handy use
 - TGSharedPreference wraps the need upon Shared Preference with default and custom implementation
 - Introduce TGLocationManager to capture current location based on certain accuracy and timeout settings
+- Added new request type "TGJsonBodyRequest" to pass entire http request body as JSon string to facilitate service which expects application/json request format.
 
 :: 1.1
 - Enabled TGService as TGFramework's service layer wrapper

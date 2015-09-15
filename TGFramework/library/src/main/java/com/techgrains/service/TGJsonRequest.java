@@ -74,7 +74,7 @@ public abstract class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
             T jsonObject = (T)TGUtil.fromJson(response.getResponse(), getType());
             populateTGResponseCoreInfo(response, jsonObject);
 
-            if(listener!=null)
+            if(listener!=null && jsonObject!=null)
                 listener.onSuccessBackgroundThread(jsonObject);
             return Response.success((T)jsonObject, HttpHeaderParser.parseCacheHeaders(networkResponse));
 

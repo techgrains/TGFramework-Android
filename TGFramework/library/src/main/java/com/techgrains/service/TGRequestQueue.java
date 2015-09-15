@@ -117,7 +117,7 @@ public class TGRequestQueue {
      * Adds provided TGRequest into the appropriate queue.
      * @param request TGRequest
      */
-    public void addRequest(TGRequest<?> request) {
+    public void addRequest(Request<?> request) {
         if(URLUtil.isNetworkUrl(request.getUrl()))
             httpRequestQueue.add(request);
         else
