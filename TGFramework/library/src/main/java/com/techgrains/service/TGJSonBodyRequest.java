@@ -1,8 +1,10 @@
 package com.techgrains.service;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
@@ -35,6 +37,7 @@ public class TGJsonBodyRequest<T extends TGResponse> extends Request<T> {
 
     public TGJsonBodyRequest(int method, String url, String requestBody, TGIResponseListener<T> listener) {
         super(method, url, null);
+        setRetryPolicy();
         this.listener = listener;
         mRequestBody = requestBody;
         this.type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -42,9 +45,38 @@ public class TGJsonBodyRequest<T extends TGResponse> extends Request<T> {
 
     public TGJsonBodyRequest(int method, String url, String requestBody, TGIResponseListener<T> listener, Type type) {
         super(method, url, null);
+        setRetryPolicy();
         this.listener = listener;
         mRequestBody = requestBody;
         this.type = type;
+    }
+
+    public TGJsonBodyRequest(int method, String url, String requestBody, TGIResponseListener<T> listener, int timeout, int maxRetries ) {
+        super(method, url, null);
+        setRetryPolicy(timeout, maxRetries);
+        this.listener = listener;
+        mRequestBody = requestBody;
+        this.type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
+
+    public TGJsonBodyRequest(int method, String url, String requestBody, TGIResponseListener<T> listener, Type type, int timeout, int maxRetries ) {
+        super(method, url, null);
+        setRetryPolicy(timeout, maxRetries);
+        this.listener = listener;
+        mRequestBody = requestBody;
+        this.type = type;
+    }
+
+    private void setRetryPolicy() {
+        setRetryPolicy(new DefaultRetryPolicy(
+                TGRequest.DEFAULT_TIMEOUT, TGRequest.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+    private void setRetryPolicy(int timeout, int maxRetries) {
+        setRetryPolicy(new DefaultRetryPolicy(
+                timeout, maxRetries,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     /**
@@ -95,8 +127,11 @@ public class TGJsonBodyRequest<T extends TGResponse> extends Request<T> {
         TGResponse response = createTGResponse(error.networkResponse);
         TGError tgError = new TGException(error).getError();
         response.setError(tgError);
-        if(response!=null)
+        if(response!=null) {
+            if(error.getClass().equals(TimeoutError.class))
+                response.setTimeout(true);
             listener.onError(response);
+        }
     }
 
     /**

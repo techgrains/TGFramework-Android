@@ -31,6 +31,7 @@ public class TGResponse extends TGObject{
     private String response;
     private Bitmap bitmap;
     private long networkTimeInMillis;
+    private boolean timeout;
     private boolean modified;
     private TGError error;
 
@@ -96,5 +97,13 @@ public class TGResponse extends TGObject{
 
     public boolean isSuccess() {
         return !hasValue(error);
+    }
+
+    public boolean isTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(boolean timeout) {
+        this.timeout = timeout;
     }
 }

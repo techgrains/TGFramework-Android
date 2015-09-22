@@ -19,8 +19,11 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
+import com.android.volley.RetryPolicy;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.techgrains.application.TGApplication;
 import com.techgrains.error.TGError;
@@ -30,6 +33,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * TGRequest has been created on top of strong Volley framework. TGRequest encapsulates all the hurdle of network calls and enables clean object orientated approach to the service caller.
@@ -38,6 +42,9 @@ import java.util.Map;
  */
 public abstract class TGRequest<T extends TGResponse> extends Request<T>{
     final static String LOG_TAG = "TG_LOG";
+
+    public static final int DEFAULT_TIMEOUT = (int)TimeUnit.SECONDS.toMillis(30);
+    public static final int DEFAULT_MAX_RETRIES = 5;
 
     private static final String API_HEADER_USERAGENT = "User-Agent";
     private static final String API_HEADER_API = "API";
@@ -65,6 +72,15 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
      */
     public TGRequest(int method, String url, TGIResponseListener<T> listener, TGParams params) {
         super(method, url, null);
+        setRetryPolicy();
+        this.listener = listener;
+        this.params = params;
+        this.type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
+
+    public TGRequest(int method, String url, TGIResponseListener<T> listener, TGParams params, int timeout, int maxRetries) {
+        super(method, url, null);
+        setRetryPolicy(timeout, maxRetries);
         this.listener = listener;
         this.params = params;
         this.type = ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
@@ -81,9 +97,30 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
      */
     public TGRequest(int method, String url, TGIResponseListener<T> listener, TGParams params, Type type) {
         super(method, url, null);
+        setRetryPolicy();
         this.listener = listener;
         this.params = params;
         this.type = type;
+    }
+
+    public TGRequest(int method, String url, TGIResponseListener<T> listener, TGParams params, Type type, int timeout, int maxRetries) {
+        super(method, url, null);
+        setRetryPolicy(timeout, maxRetries);
+        this.listener = listener;
+        this.params = params;
+        this.type = type;
+    }
+
+    private void setRetryPolicy() {
+        setRetryPolicy(new DefaultRetryPolicy(
+                DEFAULT_TIMEOUT, DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+    }
+
+    private void setRetryPolicy(int timeout, int maxRetries) {
+        setRetryPolicy(new DefaultRetryPolicy(
+                timeout, maxRetries,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
     }
 
     /**
@@ -130,8 +167,11 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
         TGResponse response = createTGResponse(error.networkResponse);
         TGError tgError = new TGException(error).getError();
         response.setError(tgError);
-        if(response!=null)
+        if(response!=null) {
+            if(error.getClass().equals(TimeoutError.class))
+                response.setTimeout(true);
             listener.onError(response);
+        }
     }
 
     TGResponse createTGResponse(NetworkResponse networkResponse) {
