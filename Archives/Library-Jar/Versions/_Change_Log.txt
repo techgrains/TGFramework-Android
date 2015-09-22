@@ -10,6 +10,8 @@ Change Log:
 - TGSharedPreference wraps the need upon Shared Preference with default and custom implementation
 - Introduce TGLocationManager to capture current location based on certain accuracy and timeout settings
 - Added new request type "TGJsonBodyRequest" to pass entire http request body as JSon string to facilitate service which expects application/json request format.
+- Exposed request time out and max retries for all TGRequest flavors. Default timeout is 30 seconds
+- Introduce timeout flag in TGResponse to indicate response is based on request timeout or not
 
 :: 1.1
 - Enabled TGService as TGFramework's service layer wrapper

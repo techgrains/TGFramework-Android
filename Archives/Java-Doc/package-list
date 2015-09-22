@@ -2,6 +2,7 @@ com.techgrains.application
 com.techgrains.common
 com.techgrains.dialog
 com.techgrains.error
+com.techgrains.geo
 com.techgrains.model
 com.techgrains.model.dialog
 com.techgrains.service
