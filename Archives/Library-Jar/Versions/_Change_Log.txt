@@ -12,6 +12,7 @@ Change Log:
 - Added new request type "TGJsonBodyRequest" to pass entire http request body as JSon string to facilitate service which expects application/json request format.
 - Exposed request time out and max retries for all TGRequest flavors. Default timeout is 30 seconds
 - Introduce timeout flag in TGResponse to indicate response is based on request timeout or not
+- Added TGAppCompactActivity to support AppCompatActivity to be extended
 
 :: 1.1
 - Enabled TGService as TGFramework's service layer wrapper
