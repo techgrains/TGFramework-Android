@@ -113,4 +113,15 @@ public class TGService extends TGObject {
     public static void loadImage(String imageUrl, ImageView imageView, int defaultImageId, int errorImageId) {
         TGRequestQueue.getInstance().loadImage(imageUrl, imageView, defaultImageId, errorImageId);
     }
+
+    /**
+     * Load Image with in memory LRU cache but callback goes back to the listener.
+     *
+     * @param imageUrl String
+     * @param imageListener TGIImageLIstener
+     */
+    public static void loadImage(String imageUrl, TGIImageListener imageListener) {
+        TGRequestQueue.getInstance().loadImage(imageUrl, imageListener);
+    }
+
 }

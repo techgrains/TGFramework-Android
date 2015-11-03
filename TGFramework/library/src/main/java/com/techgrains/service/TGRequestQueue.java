@@ -144,6 +144,17 @@ public class TGRequestQueue {
         TGImageLoader tgImageLoader = TGImageLoader.getInstance(imageRequestQueue, new LruBitmapCache(LRU_CACHE_SIZE));
         tgImageLoader.loadImage(imageUrl, imageView, defaultImageId, errorImageId);
     }
+
+    /**
+     * Load Image with in memory LRU cache but callback goes back to the listener.
+     *
+     * @param imageUrl String
+     * @param tgiImageListener TGIImageListener
+     */
+    public void loadImage(String imageUrl, final TGIImageListener tgiImageListener) {
+        TGImageLoader tgImageLoader = TGImageLoader.getInstance(imageRequestQueue, new LruBitmapCache(LRU_CACHE_SIZE));
+        tgImageLoader.loadImage(imageUrl, tgiImageListener);
+    }
 }
 
 class FileStack implements HttpStack {

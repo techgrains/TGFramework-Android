@@ -17,8 +17,13 @@ package com.techgrains.service;
 
 import android.widget.ImageView;
 
+import com.android.volley.NetworkResponse;
 import com.android.volley.RequestQueue;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
+import com.techgrains.error.TGError;
+import com.techgrains.error.TGException;
 
 /**
  * Custom Image Loader class to be used along with Lru Cache
@@ -41,5 +46,29 @@ public class TGImageLoader {
 
     public void loadImage(String imageUrl, ImageView imageView, int defaultImageId, int errorImageId) {
         imageLoader.get(imageUrl, ImageLoader.getImageListener(imageView, defaultImageId, errorImageId));
+    }
+
+    public void loadImage(String imageUrl, final TGIImageListener tgiImageListener) {
+        ImageLoader.ImageListener imageListener = new ImageLoader.ImageListener() {
+            @Override
+            public void onResponse(ImageLoader.ImageContainer response, boolean isImmediate) {
+                tgiImageListener.onLoad(response.getBitmap(), response.getRequestUrl());
+            }
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                TGResponse response = new TGResponse();
+                TGError tgError = new TGException(error).getError();
+                response.setError(tgError);
+                if(response!=null) {
+                    if(error.getClass().equals(TimeoutError.class))
+                        response.setTimeout(true);
+                    tgiImageListener.onError(response);
+                }
+
+            }
+        };
+
+        imageLoader.get(imageUrl, imageListener);
     }
 }
