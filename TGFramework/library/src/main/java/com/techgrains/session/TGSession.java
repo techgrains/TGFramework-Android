@@ -137,6 +137,20 @@ public class TGSession extends TGObject {
     }
 
     /**
+     * Fetches value from the session for the given key. It returns defaultValue if key is not available or having value null.
+     *
+     * @param key Non-null String to represent as key
+     * @param defaultValue Object to represent default value in case of value is null
+     * @return Object which paired with the key as value
+     */
+    public Object get(String key, Object defaultValue) {
+        Object value = keyValues.get(key);
+        if(value!=null)
+            return value;
+        return defaultValue;
+    }
+
+    /**
      * Removes key-value pair from the session for the provided key. Calls TGSessionListener.keyRemove prior to remove from session.
      *
      * @param key Non-null String to represent as key

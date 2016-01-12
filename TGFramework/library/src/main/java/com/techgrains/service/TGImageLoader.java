@@ -71,4 +71,8 @@ public class TGImageLoader {
 
         imageLoader.get(imageUrl, imageListener);
     }
+
+    public static ImageLoader getImageLoader() {
+        return imageLoader;
+    }
 }
