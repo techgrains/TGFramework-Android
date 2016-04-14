@@ -29,6 +29,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.techgrains.common.TGObject;
 
+import com.techgrains.service.TGParams;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -231,6 +232,32 @@ public class TGUtil extends TGObject {
         if(qIndex>=0)
             return url.substring(0, qIndex);
         return url;
+    }
+
+    /**
+     * Appends params to URL.
+     * @param url String
+     * @param params TGParams
+     * @return String URL with trailing params
+     */
+    public static String appendParamsToUrl(String url, TGParams params) {
+        if(params==null || params.getParams().size()==0)
+            return url;
+
+        StringBuffer buffer = new StringBuffer(url);
+        boolean isFirstParam = true;
+        Map<String, String> keyValues = params.getParams();
+        for (String key : keyValues.keySet()) {
+            if(isFirstParam) {
+                buffer.append("?");
+                isFirstParam = false;
+            }
+            else {
+                buffer.append("&");
+            }
+            buffer.append(key+"="+keyValues.get(key));
+        }
+        return buffer.toString();
     }
 
     private static class IntegerDeserializer implements JsonDeserializer<Object>

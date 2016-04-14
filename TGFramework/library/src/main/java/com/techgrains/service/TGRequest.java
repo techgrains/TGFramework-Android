@@ -29,6 +29,7 @@ import com.techgrains.application.TGApplication;
 import com.techgrains.error.TGError;
 import com.techgrains.error.TGException;
 
+import com.techgrains.util.TGUtil;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -63,7 +64,7 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
     }
 
     /**
-     * Intialize TGRequest
+     * Initialize TGRequest
      *
      * @param method i.e., TGRequest.Method.POST
      * @param url String
@@ -71,7 +72,7 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
      * @param params TGParams
      */
     public TGRequest(int method, String url, TGIResponseListener<T> listener, TGParams params) {
-        super(method, url, null);
+        super(method, Method.GET == method ? TGUtil.appendParamsToUrl(url, params) : url, null);
         setRetryPolicy();
         this.listener = listener;
         this.params = params;
@@ -79,7 +80,7 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
     }
 
     public TGRequest(int method, String url, TGIResponseListener<T> listener, TGParams params, int timeout, int maxRetries) {
-        super(method, url, null);
+        super(method, Method.GET == method ? TGUtil.appendParamsToUrl(url, params) : url, null);
         setRetryPolicy(timeout, maxRetries);
         this.listener = listener;
         this.params = params;
@@ -87,7 +88,7 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
     }
 
     /**
-     * Intialize TGRequest
+     * Initialize TGRequest
      *
      * @param method i.e., TGRequest.Method.POST
      * @param url String
@@ -96,7 +97,7 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
      * @param type Type (Reflection Type) Provide type: {@code Type type = new TypeToken<Employee>(){}.getType();}
      */
     public TGRequest(int method, String url, TGIResponseListener<T> listener, TGParams params, Type type) {
-        super(method, url, null);
+        super(method, Method.GET == method ? TGUtil.appendParamsToUrl(url, params) : url, null);
         setRetryPolicy();
         this.listener = listener;
         this.params = params;
@@ -104,7 +105,7 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
     }
 
     public TGRequest(int method, String url, TGIResponseListener<T> listener, TGParams params, Type type, int timeout, int maxRetries) {
-        super(method, url, null);
+        super(method, Method.GET == method ? TGUtil.appendParamsToUrl(url, params) : url, null);
         setRetryPolicy(timeout, maxRetries);
         this.listener = listener;
         this.params = params;

@@ -18,6 +18,7 @@ package com.techgrains.util;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
+import com.techgrains.service.TGParams;
 import org.junit.*;
 
 import java.text.ParseException;
@@ -119,6 +120,16 @@ public class TGUtilTest {
         assertEquals(expectedUrl, trimUrl);
         trimUrl = TGUtil.trimParamsFromUrl("http://www.techgrains.com/user/search?location=India&sortBy=name");
         assertEquals(expectedUrl, trimUrl);
+    }
+
+    @Test
+    public void appendParamsToUrl() {
+        String url = "http://www.techgrains.com/user/search";
+        TGParams params = new TGParams();
+        params.putParam("location", "India");
+        params.putParam("sortBy", "name");
+        String expectedUrl = "http://www.techgrains.com/user/search?location=India&sortBy=name";
+        assertEquals(expectedUrl, TGUtil.appendParamsToUrl(url, params));
     }
 
     private String employeeJson() {
