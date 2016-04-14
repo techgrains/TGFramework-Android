@@ -1,5 +1,9 @@
 Change Log:
 ===========
+:: 1.3
+- Get Key's value from TGSession with default value option
+- More accurate Location Manager considering best available provider
+- For GET request, append TGParams to URL
 
 :: 1.2
 - TGImageReqeust implementation to load images.
