@@ -1,6 +1,7 @@
 package com.techgrains.geo;
 
 import android.content.Context;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -32,6 +33,8 @@ public class TGLocationManager implements LocationListener {
     private TGLocationListener listener;
     private float targetAccuracy = 0.0f;
     private int timeout = DEFAULT_TIMEOUT;
+    private long MIN_TIME = 20000L; //Milliseconds
+    private float MIN_DISTANCE = 1.0f; //Meter
 
     /**
      * Start capturing location with 30 secs of default timeout.
@@ -75,10 +78,16 @@ public class TGLocationManager implements LocationListener {
         stop();
 
         startUpdateTimer();
+
         locationManager = (LocationManager) TGApplication.getContext().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-        if(listener!=null)
+        String bestProvider = locationManager.getBestProvider(new Criteria(), false);
+        locationManager.requestLocationUpdates(bestProvider, MIN_TIME, MIN_DISTANCE, this);
+        Location location = locationManager.getLastKnownLocation(bestProvider);
+
+        if (listener != null) {
             listener.onStart();
+            onLocationChanged(location);
+        }
     }
 
     private void startUpdateTimer() {
@@ -95,16 +104,17 @@ public class TGLocationManager implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        if(listener!=null)
-            listener.onLocationChanged(location);
+        if(location!=null) {
+            if (listener != null) listener.onLocationChanged(location);
 
-        if (location.getAccuracy() <= currentAccuracy || isFirstTimeGetAccuracy) {
-            isFirstTimeGetAccuracy = false;
-            currentAccuracy = location.getAccuracy();
-        }
+            if (location.getAccuracy() <= currentAccuracy || isFirstTimeGetAccuracy) {
+                isFirstTimeGetAccuracy = false;
+                currentAccuracy = location.getAccuracy();
+            }
 
-        if (location.getAccuracy() <= targetAccuracy) {
-            onAccurateLocation(location);
+            if (location.getAccuracy() <= targetAccuracy) {
+                onAccurateLocation(location);
+            }
         }
     }
 
