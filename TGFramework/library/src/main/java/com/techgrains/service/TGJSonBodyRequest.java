@@ -89,7 +89,7 @@ public class TGJsonBodyRequest<T extends TGResponse> extends Request<T> {
     final protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
         TGResponse response = createTGResponse(networkResponse);
         try {
-            T jsonObject = (T) TGUtil.fromJson(response.getResponse(), getType());
+            T jsonObject = (T) TGUtil.fromJson(response.getNetworkResponse(), getType());
             populateTGResponseCoreInfo(response, jsonObject);
 
             if(listener!=null && jsonObject!=null)
@@ -99,12 +99,15 @@ public class TGJsonBodyRequest<T extends TGResponse> extends Request<T> {
         } catch (JsonSyntaxException jse) {
             response.setError(new TGException(jse).getError());
             response.getError().setMessage("Unable to convert json response to object. Please match JSon syntax with expected response object." + jse.getMessage());
+            response.getError().setDetailMessage(jse.getMessage());
         } catch (ClassCastException cce) {
             cce.printStackTrace();
             response.setError(new TGException(cce).getError());
             response.getError().setMessage("Unable to convert json response to object. " + cce.getMessage());
+            response.getError().setDetailMessage(cce.getMessage());
         } catch (Exception e) {
             response.setError(new TGException(e).getError());
+            response.getError().setDetailMessage(e!=null ? e.getMessage() : "");
         }
         if(listener!=null)
             listener.onError(response);
@@ -170,7 +173,7 @@ public class TGJsonBodyRequest<T extends TGResponse> extends Request<T> {
         TGResponse response = new TGResponse();
         if(networkResponse!=null) {
             response.setStatusCode(networkResponse.statusCode);
-            response.setResponse(new String(networkResponse.data));
+            response.setNetworkResponse(new String(networkResponse.data));
             response.setHeaders(networkResponse.headers);
             response.setNetworkTimeInMillis(networkResponse.networkTimeMs);
             response.setModified(!networkResponse.notModified);
@@ -187,7 +190,7 @@ public class TGJsonBodyRequest<T extends TGResponse> extends Request<T> {
     private void populateTGResponseCoreInfo(TGResponse source, TGResponse jsonObject) {
         if(source!=null && jsonObject!=null) {
             jsonObject.setStatusCode(source.getStatusCode());
-            jsonObject.setResponse(new String(source.getResponse()));
+            jsonObject.setNetworkResponse(new String(source.getNetworkResponse()));
             jsonObject.setHeaders(source.getHeaders());
             jsonObject.setNetworkTimeInMillis(source.getNetworkTimeInMillis());
             jsonObject.setModified(source.isModified());

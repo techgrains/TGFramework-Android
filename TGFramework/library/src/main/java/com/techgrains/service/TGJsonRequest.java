@@ -71,7 +71,7 @@ public abstract class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
     final protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
         TGResponse response = createTGResponse(networkResponse);
         try {
-            T jsonObject = (T)TGUtil.fromJson(response.getResponse(), getType());
+            T jsonObject = (T)TGUtil.fromJson(response.getNetworkResponse(), getType());
             populateTGResponseCoreInfo(response, jsonObject);
 
             if(listener!=null && jsonObject!=null)
@@ -81,12 +81,15 @@ public abstract class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
         } catch (JsonSyntaxException jse) {
             response.setError(new TGException(jse).getError());
             response.getError().setMessage("Unable to convert json response to object. Please match JSon syntax with expected response object." + jse.getMessage());
+            response.getError().setDetailMessage(jse.getMessage());
         } catch (ClassCastException cce) {
             cce.printStackTrace();
             response.setError(new TGException(cce).getError());
             response.getError().setMessage("Unable to convert json response to object. " + cce.getMessage());
+            response.getError().setDetailMessage(cce.getMessage());
         } catch (Exception e) {
             response.setError(new TGException(e).getError());
+            response.getError().setDetailMessage(e!=null ? e.getMessage() : "");
         }
         if(listener!=null)
             listener.onError(response);

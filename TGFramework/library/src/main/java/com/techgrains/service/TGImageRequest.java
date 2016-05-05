@@ -88,7 +88,7 @@ public class TGImageRequest extends ImageRequest {
         response = new TGResponse();
         if(networkResponse!=null) {
             response.setStatusCode(networkResponse.statusCode);
-            response.setResponse(new String(networkResponse.data));
+            response.setNetworkResponse(new String(networkResponse.data));
             response.setHeaders(networkResponse.headers);
             response.setNetworkTimeInMillis(networkResponse.networkTimeMs);
             response.setModified(!networkResponse.notModified);

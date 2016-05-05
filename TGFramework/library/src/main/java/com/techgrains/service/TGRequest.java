@@ -179,7 +179,7 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
         TGResponse response = new TGResponse();
         if(networkResponse!=null) {
             response.setStatusCode(networkResponse.statusCode);
-            response.setResponse(new String(networkResponse.data));
+            response.setNetworkResponse(new String(networkResponse.data));
             response.setHeaders(networkResponse.headers);
             response.setNetworkTimeInMillis(networkResponse.networkTimeMs);
             response.setModified(!networkResponse.notModified);
@@ -196,7 +196,7 @@ public abstract class TGRequest<T extends TGResponse> extends Request<T>{
     void populateTGResponseCoreInfo(TGResponse source, TGResponse jsonObject) {
         if(source!=null && jsonObject!=null) {
             jsonObject.setStatusCode(source.getStatusCode());
-            jsonObject.setResponse(new String(source.getResponse()));
+            jsonObject.setNetworkResponse(new String(source.getNetworkResponse()));
             jsonObject.setHeaders(source.getHeaders());
             jsonObject.setNetworkTimeInMillis(source.getNetworkTimeInMillis());
             jsonObject.setModified(source.isModified());

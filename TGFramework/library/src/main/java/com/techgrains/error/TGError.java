@@ -22,6 +22,7 @@ public class TGError {
 
     private int code;
     private String message;
+    private String detailMessage;
 
     public TGError(int code, String message) {
         this.code = code;
@@ -44,4 +45,11 @@ public class TGError {
         this.message = message;
     }
 
+    public String getDetailMessage() {
+        return detailMessage;
+    }
+
+    public void setDetailMessage(String detailMessage) {
+        this.detailMessage = detailMessage;
+    }
 }

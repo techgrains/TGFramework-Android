@@ -23,12 +23,12 @@ import com.techgrains.error.TGError;
 import java.util.Map;
 
 /**
- * TGResponse holds HTTP response information once TGRequest has been generated.
+ * TGResponse holds HTTP network response information once TGRequest has been generated.
  */
 public class TGResponse extends TGObject{
     private int statusCode;
     private Map<String, String> headers;
-    private String response;
+    private String networkResponse;
     private Bitmap bitmap;
     private long networkTimeInMillis;
     private boolean timeout;
@@ -43,12 +43,12 @@ public class TGResponse extends TGObject{
         this.statusCode = statusCode;
     }
 
-    public String getResponse() {
-        return response;
+    public String getNetworkResponse() {
+        return networkResponse;
     }
 
-    public void setResponse(String response) {
-        this.response = response;
+    public void setNetworkResponse(String networkResponse) {
+        this.networkResponse = networkResponse;
     }
 
     public Bitmap getBitmap() {
