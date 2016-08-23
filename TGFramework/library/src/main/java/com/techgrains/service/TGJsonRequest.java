@@ -62,6 +62,21 @@ public abstract class TGJsonRequest<T extends TGResponse> extends TGRequest<T> {
     }
 
     /**
+     * Initialize TGJsonRequest
+     *
+     * @param method i.e., TGRequest.Method.POST
+     * @param url String
+     * @param listener TGIResponseListener
+     * @param params TGParams
+     * @param type Type (Reflection Type) Provide type: {@code Type type = new TypeToken<Employee>(){}.getType();}
+     * @param timeout timeout of the request
+     * @param maxRetries max retries of the request
+     */
+    public TGJsonRequest(int method, String url, TGIResponseListener<T> listener, TGParams params, Type type, int timeout, int maxRetries) {
+        super(method, url, listener, params, type, timeout, maxRetries);
+    }
+
+    /**
      * Parsing the network response into standard TGResponse
      *
      * @param networkResponse NetworkResponse
