@@ -4,6 +4,8 @@ Change Log:
 - Get Key's value from TGSession with default value option
 - More accurate Location Manager considering best available provider
 - For GET request, append TGParams to URL
+- Included detailed message field in TGError
+- Upgraded from "com.mcxiaoke.volley" to official "com.android.volley"
 
 :: 1.2
 - TGImageReqeust implementation to load images.
