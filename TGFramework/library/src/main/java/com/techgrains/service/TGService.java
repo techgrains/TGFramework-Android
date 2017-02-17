@@ -34,6 +34,15 @@ public class TGService extends TGObject {
     }
 
     /**
+     * Performs TGJsonArrayRequest which gives TGResponse based on the JSon output.
+     *
+     * @param request TGJsonArrayRequest
+     */
+    public static void performJsonArrayRequest(TGJsonArrayRequest request) {
+        TGRequestQueue.getInstance().addRequest(request);
+    }
+
+    /**
      * Performs TGStringRequest which gives TGResponse based on the output.
      *
      * @param request TGStringRequest

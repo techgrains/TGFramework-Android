@@ -8,9 +8,6 @@ import com.techgrains.dialog.TGIProgressDialog;
 
 import junit.framework.Assert;
 
-/**
- * Created by CNS on 27/04/15.
- */
 public class FeaturesActivityTest extends ActivityInstrumentationTestCase2<FeaturesActivity> {
 
     private FeaturesActivity mActivity = null;

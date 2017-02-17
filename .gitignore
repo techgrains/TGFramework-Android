@@ -37,3 +37,4 @@ TGFramework/library/*.iml
 
 # Mac OSX
 **/.DS_Store
+TGFramework/projectFilesBackup/.idea

@@ -81,6 +81,20 @@ public class TGUtilTest {
     }
 
     @Test
+    public void fromJsonArraySuccess() {
+        List<Employee> employees = (List<Employee>) TGUtil.fromJson(employeeJsonArray(), new TypeToken<List<Employee>>(){}.getType());
+
+        Employee employee = employees.get(1);
+        assertNotNull(employee);
+        assertEquals("amit", employee.name);
+        assertEquals(36, employee.age);
+        assertEquals(98765.43, employee.salary, 2);
+        assertEquals(1, employee.departments.size());
+        assertEquals(3, employee.departments.get(0).id);
+        assertEquals("mgmt", employee.departments.get(0).name);
+    }
+
+    @Test
     public void fromJsonFailure() {
         try {
             Employee employee = (Employee) TGUtil.fromJson("{type:wrong json}", new TypeToken<Employee>() {}.getType());
@@ -134,6 +148,10 @@ public class TGUtilTest {
 
     private String employeeJson() {
         return "{name:vishal, age:35, salary:54376.43, departments:[{id:1,name:hr},{id:2,name:it}]}";
+    }
+
+    private String employeeJsonArray() {
+        return "[{name:vishal, age:35, salary:54376.43, departments:[{id:1,name:hr},{id:2,name:it}]},{name:amit, age:36, salary:98765.43, departments:[{id:3,name:mgmt}]}]";
     }
 }
 

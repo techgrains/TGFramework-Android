@@ -68,7 +68,7 @@ public abstract class TGActivity extends Activity implements TGIAlertDialog, TGI
 
         dialog.setCancelable(alertDialog.isCancellable());
 
-        if (TGUtil.hasValue(alertDialog.getIcon() != -1)) {
+        if (alertDialog.getIcon() >0) {
             dialog.setIcon(alertDialog.getIcon());
         }
         dialog.show();

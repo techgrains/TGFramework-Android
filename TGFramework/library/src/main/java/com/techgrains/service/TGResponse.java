@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import com.techgrains.common.TGObject;
 import com.techgrains.error.TGError;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -34,6 +35,7 @@ public class TGResponse extends TGObject{
     private boolean timeout;
     private boolean modified;
     private TGError error;
+    private List list;
 
     public int getStatusCode() {
         return statusCode;
@@ -105,5 +107,13 @@ public class TGResponse extends TGObject{
 
     public void setTimeout(boolean timeout) {
         this.timeout = timeout;
+    }
+
+    public List getList() {
+        return list;
+    }
+
+    public void setList(List list) {
+        this.list = list;
     }
 }
