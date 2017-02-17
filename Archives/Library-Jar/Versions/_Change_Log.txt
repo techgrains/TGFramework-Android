@@ -6,6 +6,7 @@ Change Log:
 - For GET request, append TGParams to URL
 - Included detailed message field in TGError
 - Upgraded from "com.mcxiaoke.volley" to official "com.android.volley"
+- Introduced TGJsonArrayRequest
 
 :: 1.2
 - TGImageReqeust implementation to load images.
