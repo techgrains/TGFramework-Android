@@ -59,7 +59,7 @@ public abstract class TGActivity extends Activity implements TGIAlertDialog, TGI
         }
 
         if (TGUtil.hasValue(alertDialog.getNegativeButtonText())) {
-            dialog.setPositiveButton(alertDialog.getNegativeButtonText(), alertDialog.getOnNegativeClick());
+            dialog.setNegativeButton(alertDialog.getNegativeButtonText(), alertDialog.getOnNegativeClick());
         }
 
         if (TGUtil.hasValue(alertDialog.getNeutralButtonText())) {
