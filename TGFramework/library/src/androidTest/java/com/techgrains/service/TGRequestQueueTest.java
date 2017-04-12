@@ -131,7 +131,7 @@ public class TGRequestQueueTest  extends TestCase {
             UserLoginRequestTest userLoginRequestTest = new UserLoginRequestTest(method, url, listener, params);
             requestQueue.addRequest(userLoginRequestTest);
             Thread.sleep(2000);
-            assertEquals("{ERROR:FILE_DOES_NOT_EXIST}", userLoginResponseTest.getResponse());
+            assertEquals("{ERROR:FILE_DOES_NOT_EXIST}", userLoginResponseTest.getNetworkResponse());
 
         } catch(Exception e) {
             fail(e.getMessage());
@@ -209,9 +209,15 @@ public class TGRequestQueueTest  extends TestCase {
         assertEquals("vishal", userLoginResponseTest.getDataTest().getUser().getName());
         assertEquals(35, userLoginResponseTest.getDataTest().getUser().getAge());
         assertNotNull(userLoginResponseTest.getDataTest().getDepartments());
-        assertEquals(2, userLoginResponseTest.getDataTest().getDepartments().size());
+        assertEquals(3, userLoginResponseTest.getDataTest().getDepartments().size());
         assertEquals("it", userLoginResponseTest.getDataTest().getDepartments().get(0));
         assertEquals("hr", userLoginResponseTest.getDataTest().getDepartments().get(1));
+        assertEquals("sales, marketing", userLoginResponseTest.getDataTest().getDepartments().get(2));
+        assertEquals(3, userLoginResponseTest.getDataTest().getOptions().size());
+        assertEquals("a,b,c", userLoginResponseTest.getDataTest().getOptions().get(0));
+        assertEquals("d", userLoginResponseTest.getDataTest().getOptions().get(1));
+        assertEquals("e", userLoginResponseTest.getDataTest().getOptions().get(2));
+
     }
 
     private void assertCityListResponse(ApiResponse<CityList> apiResponseCityList) {

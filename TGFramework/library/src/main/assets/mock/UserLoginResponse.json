@@ -5,6 +5,7 @@
       "name": "vishal",
       "age": 35
     },
-    "departments":["it","hr"]
+    "departments":["it","hr", "sales, marketing"],
+    "Options":["a,b,c","d","e"]
   }
 }

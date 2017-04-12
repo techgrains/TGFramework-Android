@@ -37,7 +37,7 @@ public class TGAlertDialog extends TGModel {
     private DialogInterface.OnClickListener onNeutralClick;
 
     private boolean cancellable;
-    private int icon = -1;
+    private int icon = 0;
 
     /**
      * @param title              : Dialog title
