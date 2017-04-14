@@ -72,7 +72,7 @@ public abstract class TGJsonArrayRequest extends TGRequest<TGResponse> {
      * Parsing the network response into standard TGResponse
      *
      * @param networkResponse NetworkResponse
-     * @return response Response<TGResponse>
+     * @return response Response having TGResponse
      */
     @Override
     final protected Response<TGResponse> parseNetworkResponse(NetworkResponse networkResponse) {
