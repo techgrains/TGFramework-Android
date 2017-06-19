@@ -107,4 +107,29 @@ public class TGSharedPreferences {
         String serialized = sharedPreferences.getString(key, null);
         return TGAndroidUtil.deserialize(serialized);
     }
+
+    /**
+     * Remove Object tied with provided key from default Shared Preference
+     * @param key String
+     * @throws IOException If unable to access Stream
+     */
+    public static void remove(String key) throws IOException {
+        remove(key, editor());
+    }
+
+    /**
+     * Remove Object tied with provided key from specified Shared Preference
+     * @param key String
+     * @param name String
+     * @param mode int
+     * @throws IOException If unable to access Stream
+     */
+    public static void remove(String key, String name, int mode) throws IOException {
+        remove(key, editor(name, mode));
+    }
+
+    private static void remove(String key, SharedPreferences.Editor editor) throws IOException {
+        editor.remove(key).commit();
+    }
+
 }
