@@ -213,7 +213,7 @@ boolean isTablet = TGAndroidUtil.isTablet();
 ```
 
 ### TGSharedPreferences
-Wrapper class of android.content.SharedPreferences interface.
+Wrapper class of `android.content.SharedPreferences` interface.
 ```
 TGSharedPreferences.editor().putString("username","Vishal");
 String username = TGSharedPreferences.instance().getString("username");
@@ -222,6 +222,10 @@ Extended Shared Preference to accomodate to put Object into the shared preferenc
 ```
 TGSharedPreferences.putObject("employee",new User("Vishal"));
 User user = TGSharedPreferences.getObject("username");
+```
+Remove stored value just by providing 'key'.
+```
+TGSharedPreferences.remove("employee");
 ```
 
 ### TGLocationManager
@@ -254,6 +258,43 @@ float targetAccuracy = 5.0f;
 int timeout = 60000; // 60 secs
 TGLocationManager tgLocationManager = new TGLocationManager(listener, targetAccuracy, timeout);
 ```
+### TGShape(s) (Line, Rectangle, Oval, Ring)
+No need to create separate layout xml just to give custom shape and effects to a view. Just prepare attributes of desired shape and apply it view using TGShapeDrawableUtil. Internally it uses `android.graphics.drawable.ShapeDrawable`
+
+##### TGLineShape
+
+```
+// Create custom Line Shape 
+TGLineShape lineShape = new TGLineShape();
+lineShape.applySweepGradient(40, 80, 50, new int[]{Color.GREEN, Color.BLUE}, null);
+lineShape.applyDashedLine(10,10);
+lineShape.applySize(1000,10);
+lineShape.applyLineCoordinates(0,10,900,10);
+lineShape.applyLineColor(Color.BLUE);
+```
+```
+// Apply line shape to desired view
+TGShapeDrawableUtil.apply(lineShape, txtView);
+```
+
+##### TGOvalShape
+```
+// Create custom Oval Shape 
+TGOvalShape ovalShape = new TGOvalShape();
+ovalShape.applySolidColor(Color.GREEN);
+ovalShape.applySize(500,500);
+ovalShape.applyStroke(10,Color.BLUE);
+ovalShape.applyDashedStroke(10,Color.DKGRAY,10,10);
+ovalShape.applyLinearGradient(100, 50, 90, 60, 40, 
+          new int[]{Color.BLUE,Color.CYAN}, null, TGShape.GradientTileMode.CLAM);
+```
+```
+// Apply oval shape to desired view
+TGShapeDrawableUtil.apply(ovalShape, txtView);
+```
+
+* Similarly can be done for Rectangle and Ring shapes.
+
 ### TGError & TGException
 Entire TGFrameworks handles and throws exception in common TGException. Also uses TGError object to transfer error information across the board. Every TGException holds TGError object as exception code and message.
 
