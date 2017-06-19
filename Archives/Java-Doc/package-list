@@ -5,6 +5,7 @@ com.techgrains.error
 com.techgrains.geo
 com.techgrains.model
 com.techgrains.model.dialog
+com.techgrains.model.shape
 com.techgrains.service
 com.techgrains.session
 com.techgrains.ui

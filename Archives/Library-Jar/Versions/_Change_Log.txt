@@ -1,5 +1,10 @@
 Change Log:
 ===========
+:: 1.4
+- Upgraded to gradle (3.3) and android build tool (25.0.0)
+- Ability to remove value/object from Shared Preference by providing 'key'
+- Introduced custom drawable TGShape for line, rectangle, oval and ring. No need to create separate layout xml.
+
 :: 1.3
 - Get Key's value from TGSession with default value option
 - More accurate Location Manager considering best available provider
@@ -35,7 +40,7 @@ Change Log:
 - TGAndroidUtil gives utility to read file from assets.
 
 :: 1.0
-- Purpose of TGFramework is to provide developer friendly library, that can help to improve feature development rather focusing on common structure creation during every mobile app development. 
+- Purpose of TGFramework is to provide developer friendly library, that can help to improve feature development rather focusing on common structure creation during every mobile app development.
 - Base Activity of TGFramework which gives handy implementation like Alert Dialog, Progress Dialog etc. (TGActivity)
 - Singleton Session management for Android application (TGSession)
 - Utility class for formating and parsing (TGUtil)
