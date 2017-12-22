@@ -42,4 +42,11 @@ public class TGApplication extends Application {
         return context;
     }
 
+    /**
+     * Sets Application Context
+     * @param context Context
+     */
+    public static void setContext(Context context) {
+        TGApplication.context = context;
+    }
 }
