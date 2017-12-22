@@ -2,8 +2,19 @@
 Purpose of TGFramework is to provide developer friendly library, that can help to improve feature development rather focusing on common structure creation during every mobile app development. 
 
 ## How to use library?
-- Copy [TGFramework.jar](Archives/Library-Jar/TGFramework.jar) into your project's lib folder and start using it !!!
-- For documentation of library classes, please refer [Java Doc](Archives/Java-Doc).
+* Copy [TGFramework.jar](Archives/Library-Jar/TGFramework.jar) into your project's lib folder and start using it !!!
+* Include following dependencies in gradle build file.
+```
+compile 'com.android.volley:volley:1.1.0'
+compile 'com.google.code.gson:gson:2.3.1'
+```
+* Include under android sction of gradle build file.
+```
+android {
+    useLibrary 'org.apache.http.legacy'
+}
+```
+* For documentation of library classes, please refer [Java Doc](Archives/Java-Doc).
 
 ## Areas where TGFramework may help
 
