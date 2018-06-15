@@ -70,6 +70,15 @@ public class TGService extends TGObject {
     }
 
     /**
+     * Performs TGJsonBodyStringRequest which gives TGResponse based on the output.
+     *
+     * @param request TGJsonBodyStringRequest
+     */
+    public static void performJsonBodyStringRequest(TGJsonBodyStringRequest request) {
+        TGRequestQueue.getInstance().addRequest(request);
+    }
+
+    /**
      * Cancels the request to be performed. If request has been initiated on the network already, it will drop the response and ignores to update listeners.
      *
      * @param request TGRequest

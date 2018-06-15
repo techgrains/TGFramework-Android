@@ -146,6 +146,11 @@ public class TGUtilTest {
         assertEquals(expectedUrl, TGUtil.appendParamsToUrl(url, params));
     }
 
+    @Test
+    public void getRandomUUID() {
+        assertEquals(36, TGUtil.getRandomUUID().length());
+    }
+
     private String employeeJson() {
         return "{name:vishal, age:35, salary:54376.43, departments:[{id:1,name:hr},{id:2,name:it}]}";
     }

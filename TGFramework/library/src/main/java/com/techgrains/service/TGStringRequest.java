@@ -19,7 +19,9 @@ import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import com.techgrains.error.TGException;
 import com.techgrains.util.TGUtil;
 
 import java.lang.reflect.Type;
@@ -44,6 +46,19 @@ public class TGStringRequest<T extends TGResponse> extends TGRequest<T> {
     }
 
     /**
+     * Initialize TGStringRequest
+     *
+     * @param method i.e., TGRequest.Method.POST
+     * @param url String
+     * @param listener TGIResponseListener
+     * @param params TGParams
+     * @param type Type (Reflection Type) Provide type: {@code Type type = new TypeToken<Employee>(){}.getType();}
+     */
+    public TGStringRequest(int method, String url, TGIResponseListener listener, TGParams params, Type type) {
+        super(method, url, listener, params, type);
+    }
+
+    /**
      * Parsing the network response into standard TGResponse
      *
      * @param networkResponse NetworkResponse
@@ -52,12 +67,31 @@ public class TGStringRequest<T extends TGResponse> extends TGRequest<T> {
     @Override
     final protected Response<T> parseNetworkResponse(NetworkResponse networkResponse) {
         TGResponse response = createTGResponse(networkResponse);
+        try {
+            T t = (T) TGUtil.fromJson("{}", getType());
+            populateTGResponseCoreInfo(response, t);
 
-        T t = (T) TGUtil.fromJson("{}", new TypeToken<T>(){}.getType());
+            if(listener!=null)
+                listener.onSuccessBackgroundThread(t);
+            return Response.success(t, HttpHeaderParser.parseCacheHeaders(networkResponse));
 
-        populateTGResponseCoreInfo(response, t);
-        listener.onSuccessBackgroundThread(t);
-        return (Response<T>) Response.success(response, HttpHeaderParser.parseCacheHeaders(networkResponse));
+        } catch (JsonSyntaxException jse) {
+            response.setError(new TGException(jse).getError());
+            response.getError().setMessage("Unable to convert json response to object. Please match JSon syntax with expected response object." + jse.getMessage());
+            response.getError().setDetailMessage(jse.getMessage());
+        } catch (ClassCastException cce) {
+            cce.printStackTrace();
+            response.setError(new TGException(cce).getError());
+            response.getError().setMessage("Unable to convert json response to object. " + cce.getMessage());
+            response.getError().setDetailMessage(cce.getMessage());
+        } catch (Exception e) {
+            response.setError(new TGException(e).getError());
+            response.getError().setDetailMessage(e!=null ? e.getMessage() : "");
+        }
+
+        if(listener!=null)
+            listener.onError(response);
+        return Response.success(null, HttpHeaderParser.parseCacheHeaders(networkResponse));
     }
 
     /**
